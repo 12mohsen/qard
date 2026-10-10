@@ -156,8 +156,10 @@ const tk=await sb.rpc("name_taken",{n});if(tk.error)throw tk.error;
 if(tk.data){e.textContent=t("exists");return}
 const r=await sb.auth.signUp({email,password:p,options:{data:{name:n}}});
 if(r.error){const m=String(r.error.message||"");e.textContent=/registered|exists|already/i.test(m)?t("exists"):m;return}
-if(!r.data.session){e.textContent=t("confirmOn");return}
-UID=r.data.user.id;
+let uu=r.data.session?r.data.user:null;
+if(!uu){const r2=await sb.auth.signInWithPassword({email,password:p});if(!r2.error)uu=r2.data.user}
+if(!uu){e.textContent=t("confirmOn");return}
+UID=uu.id;
 }else{
 const r=await sb.auth.signInWithPassword({email,password:p});
 if(r.error){e.textContent=/invalid|credentials/i.test(String(r.error.message))?t("bad"):r.error.message;return}

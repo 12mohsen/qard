@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>دفتر القروض</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f5f8;--card:#fff;--ink:#14213d;--mute:#5d6b82;--line:#dde3ec;--ok:#0f8b6d;--bad:#c8372d;--warn:#b7791f;--main:#14213d;--gold:#e0a526;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1522;--card:#18223a;--ink:#eef2f8;--mute:#9aa8c0;--line:#2a3652;--main:#e0a526}}
+:root[data-theme="dark"]{--bg:#0e1522;--card:#18223a;--ink:#eef2f8;--mute:#9aa8c0;--line:#2a3652;--main:#e0a526}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Tajawal,system-ui,sans-serif;line-height:1.6}
+.wrap{max-width:900px;margin:auto;padding:16px}
+header{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+h1{font-size:1.5rem;margin:0;font-weight:800;flex:1}
+h2{font-size:1.1rem;margin:0 0 10px}
+select,input,button{font:inherit;color:inherit}
+input,select{width:100%;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+label{display:block;font-size:.85rem;color:var(--mute);margin-bottom:4px}
+button{cursor:pointer;border:0;border-radius:8px;padding:9px 14px;font-weight:700;background:var(--main);color:#fff}
+:root[data-theme="dark"] button.p,@media (prefers-color-scheme:dark){}
+button.g{background:transparent;color:var(--ink);border:1px solid var(--line)}
+button.ok{background:var(--ok)}button.bad{background:var(--bad)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--gold);outline-offset:1px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}
+.stat{background:var(--card);border:1px solid var(--line);border-inline-start:5px solid var(--gold);border-radius:10px;padding:10px 12px}
+.stat b{display:block;font-size:1.3rem}.stat span{color:var(--mute);font-size:.82rem}
+.alert{background:#fdecea;color:#8c1d14;border:1px solid var(--bad);border-radius:10px;padding:10px 14px;margin-bottom:8px;font-weight:500}
+.who{padding:2px 10px;border-radius:999px;font-size:.85em;border:1px solid}.who b{font-weight:800}.who.f{background:rgba(228,168,36,.16);color:#f2c14e;border-color:rgba(228,168,36,.55)}.who.o{background:rgba(122,162,247,.14);color:#9db8ff;border-color:rgba(122,162,247,.5)}
+.alert.w{background:#fff5df;color:#7a4e07;border-color:var(--gold)}
+.loan{display:grid;grid-template-columns:1fr auto;gap:8px;border-top:1px solid var(--line);padding:12px 0}
+.loan:first-of-type{border-top:0}
+.loan .m{color:var(--mute);font-size:.88rem}
+.tag{display:inline-block;padding:1px 10px;border-radius:99px;font-size:.8rem;font-weight:700;color:#fff}
+.t-paid{background:var(--ok)}.t-over{background:var(--bad)}.t-pend{background:var(--warn)}.dsel{display:flex;gap:4px;max-width:420px}.dsel select{padding:10px 4px}.dw{grid-column:1/-1}.loan.soon{border:2px solid var(--gold);background:rgba(224,165,38,.14);border-radius:10px;padding:12px;margin:6px 0}.soonmsg{font-weight:700;color:var(--warn)}.bcard{padding:0 16px 4px}.bh{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:12px 0;border-bottom:2px solid var(--line)}.bh .m{flex:1;min-width:180px}.hb{padding:4px 10px;font-size:1.1rem}.hist{background:var(--bg);border-radius:8px;margin:8px 0;padding:4px 8px}.tag.cn{background:var(--line);color:var(--ink)}@keyframes shp{0%,100%{box-shadow:0 0 0 0 rgba(242,140,40,.7)}50%{box-shadow:0 0 0 7px rgba(242,140,40,0)}}
+.shn{background:#f28c28!important;border-color:#f28c28!important;color:#1a1100!important;font-weight:800;animation:shp 1.6s infinite}.shy{border-color:rgba(242,140,40,.6)!important;color:#ffb566!important}
+.bscroll{max-height:360px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#f28c28 #1a2340;padding-inline-end:6px}.bscroll::-webkit-scrollbar{width:8px}.bscroll::-webkit-scrollbar-button{display:none;height:0}.qs{margin-bottom:10px}input::placeholder{color:var(--mute);opacity:.45}.cn2{display:inline-block;min-width:22px;padding:1px 7px;margin-inline-start:4px;border-radius:999px;background:rgba(255,255,255,.14);font-size:.85em;font-weight:800}button.on .cn2{background:rgba(0,0,0,.2)}.bscroll::-webkit-scrollbar-track{background:#1a2340;border-radius:8px}.bscroll::-webkit-scrollbar-thumb{background:#f28c28;border-radius:8px}
+.shp{grid-column:1/-1;border:1px solid rgba(242,140,40,.65);border-inline-start:4px solid #f28c28;background:rgba(242,140,40,.10);border-radius:12px;padding:12px;margin-top:8px}.shp>.m{color:#ffb566}.shp .shr b{color:#ffb566}.shp .row>button:not(.bad){background:#f28c28;border-color:#f28c28;color:#1a1100}.shp input{border-color:rgba(242,140,40,.45)}.shr{display:flex;gap:8px;align-items:center;padding:3px 0}.shr span{flex:1}.shr .bad{padding:2px 9px}.ovl{position:fixed;inset:0;background:rgba(5,10,20,.62);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50}.dlg{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:18px;padding:22px;width:min(430px,100%);max-height:90vh;overflow:auto;box-shadow:0 24px 70px rgba(0,0,0,.5);animation:pop .16s ease-out}@keyframes pop{from{transform:translateY(8px) scale(.96);opacity:0}to{transform:none;opacity:1}}.dlg h3{margin:0 0 6px;font-size:1.2rem;font-weight:800}.dlg p{margin:0 0 14px;color:var(--mute)}.dlg .fld{margin-bottom:14px}.dlg .dact{display:flex;gap:10px;margin-top:18px}.dlg .dact button{flex:1;padding:12px;border-radius:10px;font-size:1rem}.dlg .dact button:first-child:not(.bad){background:var(--gold);color:#14213d}.t-wait{background:#7b8494}.loan.wait>div:first-child{filter:grayscale(1);opacity:.75}
+.acts{display:flex;gap:6px;flex-wrap:wrap;align-items:flex-start}
+.tabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.tabs button.on{background:var(--gold);color:#14213d}
+.err{color:var(--bad);min-height:1.4em;margin:8px 0 0}
+.auth{max-width:380px;margin:8vh auto}
+.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1}
+.empty{color:var(--mute);text-align:center;padding:18px}
+.badge{font-size:.75rem;background:var(--gold);color:#14213d;border-radius:6px;padding:0 6px;font-weight:700}
+.tw{overflow:auto;max-height:460px;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#f28c28 #1a2340}.tw::-webkit-scrollbar,.gscroll::-webkit-scrollbar{width:8px;height:8px}.tw::-webkit-scrollbar-thumb,.gscroll::-webkit-scrollbar-thumb{background:#f28c28;border-radius:8px}.tw::-webkit-scrollbar-track,.gscroll::-webkit-scrollbar-track{background:#1a2340;border-radius:8px}.tw::-webkit-scrollbar-button,.gscroll::-webkit-scrollbar-button{display:none;height:0;width:0}.tw th{position:sticky;top:0;background:var(--card);z-index:1}.gscroll{max-height:78vh;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#f28c28 #1a2340;padding-inline-end:4px}table{width:100%;border-collapse:collapse}td,th{padding:8px;border-bottom:1px solid var(--line);text-align:start;white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1 id="ttl"></h1><span class="badge" id="who" style="font-size:.95rem;padding:3px 10px"></span>
+<select id="lang" style="width:auto" aria-label="Language">
+<option value="ar">العربية</option><option value="id">Indonesia</option><option value="en">English</option>
+</select>
+<button class="g" id="pwb" hidden></button>
+<button class="g" id="out" hidden></button>
+</header>
+<div id="app"></div>
+</div>
+<script>
+const T={
+ar:{t:"دفتر القروض",login:"تسجيل الدخول",reg:"إنشاء حساب",user:"اسم المستخدم",pass:"كلمة المرور",have:"لديك حساب؟ سجّل الدخول",no:"ليس لديك حساب؟ أنشئ حساب",out:"خروج",bad:"اسم المستخدم أو كلمة المرور غير صحيحة",exists:"اسم المستخدم مستخدم من قبل",short:"اسم المستخدم 3 أحرف وكلمة المرور 4 أحرف على الأقل",
+add:"إضافة قرض",name:"اسم المقترض",amt:"المبلغ المقترض",pct:"نسبة الربح %",tot:"المبلغ المسترد",days:"مدة الإرجاع (أيام)",start:"تاريخ القرض",due:"وقت السداد",save:"حفظ القرض",
+cur:"ريال",paid:"تم السداد",unpaid:"لم يسدد",over:"متأخر",pend:"قيد الانتظار",paidTag:"مسدد",del:"حذف",sure:"هل أنت متأكد؟",
+sLent:"إجمالي المقرض",sBack:"المطلوب استرداده",sGot:"تم استرداده",sLate:"قروض متأخرة",
+aOver:"تنبيه: لم يسدد {n} المبلغ {a} — تأخر {d} يوم",aSoon:"يحل موعد سداد {n} ({a}) {when}",today:"اليوم",tom:"غداً",
+none:"لا توجد قروض بعد. أضف أول قرض من النموذج أعلاه.",loans:"القروض",users:"المستخدمون",all:"كل القروض",owner:"مسجل القرض",role:"الدور",admin:"أدمن",usr:"مستخدم",mk:"ترقية لأدمن",rm:"إزالة الأدمن",adm:"لوحة الأدمن — صلاحيات كاملة",days_:"يوم",left:"باقي",flt:"الكل",edit:"تعديل",ask:"اسم المقترض:",shr:"الحصص",sName:"الاسم",sAmt:"المبلغ",sAdd:"إضافة حصة",sMine:"حصصي",sDist:"الموزع",sRem:"الباقي لصاحب القرض",adminRest:"صاحب القرض (الباقي)",rest:"الباقي",allSh:"كل الحصص",acct:"حسابي",balOwner:"صاحب الرصيد",ok:"تأكيد",cancel:"إلغاء",cfmWd:"تأكيد السحب",wdNeeds:"سيُرسل الطلب إلى الأدمن للموافقة، ويُحجز المبلغ من رصيدك فورًا.",wdNow:"سيُخصم المبلغ من الرصيد فورًا.",saveB:"حفظ",srcP:"من الأرباح",srcC:"من رأس المال",wdFrom:"السحب من",reqWd:"طلب سحب",doWd:"سحب",pendWd:"بانتظار الموافقة",kWdP:"سحب من الأرباح",kWdC:"سحب من رأس المال",profAv:"الأرباح المتاحة للسحب",wdReqs:"طلبات السحب",okWd:"موافقة",rejWd:"رفض",dep:"إيداع",wd:"سحب",stmt:"كشف الحساب",cap0:"رأس المال الابتدائي",capNow:"رأس المال الحالي",pIn:"الأرباح المضافة للرصيد",wdTot:"المسحوب",outL:"قروض خارجة",askDep:"مبلغ الإيداع (يُضاف إلى رأس المال)",askWd:"مبلغ السحب من الرصيد",askNote:"ملاحظة (اختياري)",noFund:"المبلغ أكبر من الرصيد المتاح",setCapFirst:"حدد رأس المال الابتدائي أولًا بزر ✎",kDep:"إيداع رأس مال",kWd:"سحب من الرصيد",kProfit:"ربح قرض",dDate:"التاريخ",dDesc:"البيان",dNote:"ملاحظة",unl:"حساب بلا حد (لم يُحدد له رأس مال)",lendFrom:"يقرض من حسابات",coll:"محصل قروض",selAll:"تحديد الكل",delSel:"حذف المحدد",sureN:"حذف {n} قرض؟ لا يمكن التراجع.",noCap:"رأس مالك 0 حاليًا. اطلب من الأدمن تحديده من تبويب «المستخدمون» حتى تتمكن من الإقراض.",noAcc:"ليس حسابًا — اكتب اسم الحساب تمامًا",fundr:"صاحب القرض",bAvail:"الرصيد المتاح",bCap:"رأس المال",eBal:"الرصيد غير كافٍ — المتاح {n}",sNet:"صافي الأدمن بعد الحصص",sNetGot:"صافي الأدمن المحصّل",ledger:"سجل الحصص حسب القرض",sOver:"تنبيه: مجموع الحصص أكبر من مبلغ الربح",myShare:"حصتك",sBad:"اكتب الاسم والمبلغ",sColl:"تم تحصيلها",sPend:"لم تُحصّل بعد",sTot:"إجمالي الحصص",sPer:"الحصص حسب الشخص",sNone:"لا توجد حصص لك بعد",hist:"سجل المقترض",regBy:"سجّله",shOwner:"صاحب الحصة",pOn:"تاريخ السداد",dly:"مدة التأخير",onT:"في الموعد",lateN:"تأخر {n} يوم",oneDay:"باقي يوم واحد — موعد السداد غدًا",dueToday:"اليوم موعد السداد",wait:"سدد — بانتظار موافقة الأدمن",fwait:"بانتظار الموافقة",appr:"موافقة على السداد",allow:"سماح بالتعديل",nWait:"⏳ {n} قرض بانتظار موافقتك على السداد",srch:"بحث بالاسم…",chPw:"تغيير كلمة المرور",pwOld:"كلمة المرور الحالية",pwNew:"كلمة المرور الجديدة",pwConf:"تأكيد كلمة المرور الجديدة",pwBad:"كلمة المرور الحالية غير صحيحة",pwMis:"كلمتا المرور الجديدتان غير متطابقتين",pwShort:"كلمة المرور 4 أحرف على الأقل",pwDone:"تم تغيير كلمة المرور بنجاح",pwFor:"كلمة مرور جديدة للمستخدم",shNone:"لم تُوزَّع الحصص بعد — اضغط للتوزيع",nWdW:"⏳ {n} طلب سحب بانتظار موافقتك",goTo:"اضغط للانتقال ←",canDel:"يحذف القروض",eName:"اكتب اسم المقترض",eAmt:"اكتب المبلغ المقرض",eRepay:"مبلغ الربح يجب ألا يكون أقل من صفر",eDue:"موعد السداد يجب ألا يسبق تاريخ القرض",profit:"مبلغ الربح",dash:"لوحة التحكم",sProfit:"الأرباح المتوقعة",sProfitGot:"الأرباح المحصّلة",canSee:"يرى الأرباح",yes:"نعم",no:"لا",cnt:"عدد القروض"},
+id:{t:"Buku Pinjaman",login:"Masuk",reg:"Buat akun",user:"Nama pengguna",pass:"Kata sandi",have:"Sudah punya akun? Masuk",no:"Belum punya akun? Daftar",out:"Keluar",bad:"Nama pengguna atau kata sandi salah",exists:"Nama pengguna sudah dipakai",short:"Nama pengguna min. 3 karakter, kata sandi min. 4 karakter",
+add:"Tambah pinjaman",name:"Nama peminjam",amt:"Jumlah pinjaman",pct:"Keuntungan %",tot:"Jumlah dikembalikan",days:"Lama pengembalian (hari)",start:"Tanggal pinjaman",due:"Jatuh tempo",save:"Simpan pinjaman",
+cur:"Rupiah",paid:"Sudah dibayar",unpaid:"Belum dibayar",over:"Terlambat",pend:"Menunggu",paidTag:"Lunas",del:"Hapus",sure:"Apakah Anda yakin?",
+sLent:"Total dipinjamkan",sBack:"Harus dikembalikan",sGot:"Sudah kembali",sLate:"Pinjaman terlambat",
+aOver:"Peringatan: {n} belum membayar {a} — terlambat {d} hari",aSoon:"Jatuh tempo {n} ({a}) {when}",today:"hari ini",tom:"besok",
+none:"Belum ada pinjaman. Tambahkan pinjaman pertama di formulir atas.",loans:"Pinjaman",users:"Pengguna",all:"Semua pinjaman",owner:"Pemilik",role:"Peran",admin:"Admin",usr:"Pengguna",mk:"Jadikan admin",rm:"Cabut admin",adm:"Panel Admin — akses penuh",days_:"hari",left:"sisa",flt:"Semua",edit:"Ubah",ask:"Nama peminjam:",shr:"Bagian",sName:"Nama",sAmt:"Jumlah",sAdd:"Tambah bagian",sMine:"Bagian saya",sDist:"Terbagi",sRem:"Sisa untuk pemilik dana",adminRest:"Pemilik dana (sisa)",rest:"sisa",allSh:"Semua bagian",acct:"Akun saya",balOwner:"Pemilik saldo",ok:"Konfirmasi",cancel:"Batal",cfmWd:"Konfirmasi penarikan",wdNeeds:"Permintaan dikirim ke admin untuk disetujui, dan jumlahnya langsung ditahan dari saldo Anda.",wdNow:"Jumlah langsung dikurangi dari saldo.",saveB:"Simpan",srcP:"dari keuntungan",srcC:"dari modal",wdFrom:"Tarik dari",reqWd:"Ajukan penarikan",doWd:"Tarik",pendWd:"Menunggu persetujuan",kWdP:"Penarikan dari keuntungan",kWdC:"Penarikan dari modal",profAv:"Keuntungan yang bisa ditarik",wdReqs:"Permintaan penarikan",okWd:"Setujui",rejWd:"Tolak",dep:"Setor",wd:"Tarik",stmt:"Mutasi akun",cap0:"Modal awal",capNow:"Modal saat ini",pIn:"Keuntungan masuk saldo",wdTot:"Ditarik",outL:"Pinjaman keluar",askDep:"Jumlah setoran (menambah modal)",askWd:"Jumlah penarikan dari saldo",askNote:"Catatan (opsional)",noFund:"Jumlah melebihi saldo tersedia",setCapFirst:"Tetapkan modal awal terlebih dahulu dengan tombol ✎",kDep:"Setoran modal",kWd:"Penarikan saldo",kProfit:"Keuntungan pinjaman",dDate:"Tanggal",dDesc:"Keterangan",dNote:"Catatan",unl:"Akun tanpa batas (modal belum ditetapkan)",lendFrom:"Meminjamkan dari akun",coll:"Penagih pinjaman",selAll:"Pilih semua",delSel:"Hapus yang dipilih",sureN:"Hapus {n} pinjaman? Tidak dapat dibatalkan.",noCap:"Modal Anda saat ini 0. Minta admin menetapkannya di tab «Pengguna» agar Anda bisa meminjamkan.",noAcc:"Bukan akun — tulis nama akun persis",fundr:"Pemilik dana",bAvail:"Saldo tersedia",bCap:"Modal",eBal:"Saldo tidak cukup — tersedia {n}",sNet:"Bersih admin setelah bagian",sNetGot:"Bersih admin terkumpul",ledger:"Catatan bagian per pinjaman",sOver:"Perhatian: total bagian melebihi keuntungan",myShare:"Bagian Anda",sBad:"Isi nama dan jumlah",sColl:"Sudah terkumpul",sPend:"Belum terkumpul",sTot:"Total bagian",sPer:"Bagian per orang",sNone:"Belum ada bagian untuk Anda",hist:"Riwayat peminjam",regBy:"Dicatat oleh",shOwner:"Pemilik bagian",pOn:"Tanggal bayar",dly:"Keterlambatan",onT:"Tepat waktu",lateN:"Terlambat {n} hari",oneDay:"Sisa 1 hari — jatuh tempo besok",dueToday:"Jatuh tempo hari ini",wait:"Dibayar — menunggu persetujuan admin",fwait:"Perlu disetujui",appr:"Setujui pembayaran",allow:"Izinkan ubah",nWait:"⏳ {n} pinjaman menunggu persetujuan Anda",srch:"Cari nama…",chPw:"Ubah kata sandi",pwOld:"Kata sandi saat ini",pwNew:"Kata sandi baru",pwConf:"Konfirmasi kata sandi baru",pwBad:"Kata sandi saat ini salah",pwMis:"Kata sandi baru tidak cocok",pwShort:"Kata sandi min. 4 karakter",pwDone:"Kata sandi berhasil diubah",pwFor:"Kata sandi baru untuk pengguna",shNone:"Bagian belum dibagi — klik untuk membagi",nWdW:"⏳ {n} permintaan penarikan menunggu persetujuan Anda",goTo:"Klik untuk membuka ←",canDel:"Boleh hapus",eName:"Isi nama peminjam",eAmt:"Isi jumlah pinjaman",eRepay:"Keuntungan tidak boleh kurang dari nol",eDue:"Jatuh tempo tidak boleh sebelum tanggal pinjaman",profit:"Jumlah keuntungan",dash:"Panel kontrol",sProfit:"Keuntungan diharapkan",sProfitGot:"Keuntungan terkumpul",canSee:"Lihat keuntungan",yes:"Ya",no:"Tidak",cnt:"Jumlah pinjaman"},
+en:{t:"Loan Ledger",login:"Log in",reg:"Create account",user:"Username",pass:"Password",have:"Have an account? Log in",no:"No account? Create one",out:"Log out",bad:"Wrong username or password",exists:"That username is taken",short:"Username needs 3+ characters, password 4+",
+add:"Add a loan",name:"Borrower name",amt:"Amount lent",pct:"Profit %",tot:"Amount to be repaid",days:"Repayment period (days)",start:"Loan date",due:"Due date",save:"Save loan",
+cur:"Dollar",paid:"Mark paid",unpaid:"Mark unpaid",over:"Overdue",pend:"Pending",paidTag:"Paid",del:"Delete",sure:"Are you sure?",
+sLent:"Total lent",sBack:"To be repaid",sGot:"Collected",sLate:"Overdue loans",
+aOver:"Alert: {n} has not paid {a} — {d} days overdue",aSoon:"{n} ({a}) is due {when}",today:"today",tom:"tomorrow",
+none:"No loans yet. Add your first one using the form above.",loans:"Loans",users:"Users",all:"All loans",owner:"Owner",role:"Role",admin:"Admin",usr:"User",mk:"Make admin",rm:"Remove admin",adm:"Admin panel — full access",days_:"days",left:"left",flt:"All",edit:"Edit",ask:"Borrower name:",shr:"Shares",sName:"Name",sAmt:"Amount",sAdd:"Add share",sMine:"My shares",sDist:"Distributed",sRem:"Remainder to lender",adminRest:"Lender (remainder)",rest:"remainder",allSh:"All shares",acct:"My account",balOwner:"Balance owner",ok:"Confirm",cancel:"Cancel",cfmWd:"Confirm withdrawal",wdNeeds:"The request goes to the admin for approval, and the amount is held from your balance right away.",wdNow:"The amount is deducted from the balance right away.",saveB:"Save",srcP:"from profit",srcC:"from capital",wdFrom:"Withdraw from",reqWd:"Request withdrawal",doWd:"Withdraw",pendWd:"Awaiting approval",kWdP:"Withdrawal from profit",kWdC:"Withdrawal from capital",profAv:"Profit available to withdraw",wdReqs:"Withdrawal requests",okWd:"Approve",rejWd:"Reject",dep:"Deposit",wd:"Withdraw",stmt:"Account statement",cap0:"Starting capital",capNow:"Current capital",pIn:"Profit added to balance",wdTot:"Withdrawn",outL:"Loans out",askDep:"Deposit amount (added to capital)",askWd:"Amount to withdraw from balance",askNote:"Note (optional)",noFund:"Amount exceeds the available balance",setCapFirst:"Set the starting capital first with the ✎ button",kDep:"Capital deposit",kWd:"Balance withdrawal",kProfit:"Loan profit",dDate:"Date",dDesc:"Description",dNote:"Note",unl:"Unlimited account (no capital set)",lendFrom:"Can lend from",coll:"Loan collector",selAll:"Select all",delSel:"Delete selected",sureN:"Delete {n} loan(s)? This cannot be undone.",noCap:"Your capital is currently 0. Ask the admin to set it in the Users tab so you can lend.",noAcc:"Not an account — type the exact account name",fundr:"Lender",bAvail:"Available balance",bCap:"Capital",eBal:"Insufficient balance — available {n}",sNet:"Admin net after shares",sNetGot:"Admin net collected",ledger:"Shares ledger per loan",sOver:"Notice: shares exceed the profit amount",myShare:"Your share",sBad:"Enter a name and amount",sColl:"Collected",sPend:"Not collected yet",sTot:"Total shares",sPer:"Shares per person",sNone:"You have no shares yet",hist:"Borrower history",regBy:"Registered by",shOwner:"Share holder",pOn:"Paid on",dly:"Delay",onT:"On time",lateN:"{n} days late",oneDay:"1 day left — due tomorrow",dueToday:"Due today",wait:"Paid — awaiting admin approval",fwait:"Awaiting approval",appr:"Approve payment",allow:"Allow editing",nWait:"⏳ {n} loan(s) awaiting your approval",srch:"Search by name…",chPw:"Change password",pwOld:"Current password",pwNew:"New password",pwConf:"Confirm new password",pwBad:"Current password is incorrect",pwMis:"New passwords do not match",pwShort:"Password must be at least 4 characters",pwDone:"Password changed successfully",pwFor:"New password for user",shNone:"Shares not distributed yet — click to distribute",nWdW:"⏳ {n} withdrawal request(s) awaiting your approval",goTo:"Click to open →",canDel:"Can delete",eName:"Enter the borrower name",eAmt:"Enter the amount lent",eRepay:"Profit cannot be less than zero",eDue:"Due date cannot be before the loan date",profit:"Profit amount",dash:"Dashboard",sProfit:"Expected profit",sProfitGot:"Profit collected",canSee:"Can see profit",yes:"Yes",no:"No",cnt:"Loans"}
+};
+let L=localStorage.getItem("lang")||"ar",cur=null,tab="loans",flt="all",qry="",mq="",mode="login";
+const nz=x=>String(x||"").toLowerCase().normalize("NFKD").replace(/[\u064B-\u065F\u0670\u0640]/g,"").replace(/[أإآٱ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه").replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d)).replace(/[^\p{L}\p{N}]/gu,"");
+const $=id=>document.getElementById(id),t=k=>T[L][k];
+const load=k=>{try{return JSON.parse(localStorage.getItem(k))||[]}catch(e){return[]}};
+const store=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const iso=d=>d.toISOString().slice(0,10);
+const addD=(s,n)=>{const d=new Date(s+"T00:00:00Z");d.setUTCDate(d.getUTCDate()+n);return iso(d)};
+const diff=(a,b)=>Math.round((new Date(a+"T00:00:00Z")-new Date(b+"T00:00:00Z"))/864e5);
+const nowS=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+const fmt=n=>Number(n).toLocaleString(L==="ar"?"ar-SA-u-nu-latn":L==="id"?"id-ID":"en-US",{maximumFractionDigits:2});
+async function hash(p){try{const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("ln:"+p));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}catch(e){return"p:"+btoa(unescape(encodeURIComponent(p)))}}
+async function seed(){const u=load("users");if(!u.length){u.push({name:"admin",pw:await hash("admin123"),admin:true});store("users",u)}}
+const users=()=>load("users"),loans=()=>load("loans");
+function st(l){if(l.paid)return"paid";if(l.req)return"wait";return l.due<nowS()?"over":"pend"}
+
+function setLang(){document.documentElement.lang=L;document.documentElement.dir=L==="ar"?"rtl":"ltr";$("lang").value=L;$("ttl").textContent=t("t");document.title=t("t");$("out").textContent=t("out");$("out").hidden=!cur;$("pwb").textContent="🔑 "+t("chPw");$("pwb").hidden=!cur;$("who").textContent=cur?"👤 "+cur:"";$("who").hidden=!cur}
+
+function authView(){
+$("app").innerHTML=`<div class="box auth"><h2>${t(mode)}</h2>
+<label for="u">${t("user")}</label><input id="u" autocomplete="username" autocapitalize="none">
+<label for="p" style="margin-top:10px">${t("pass")}</label><input id="p" type="password" autocomplete="${mode==="login"?"current-password":"new-password"}">
+<p class="err" id="e"></p>
+<div class="row"><button id="go">${t(mode)}</button></div>
+<p><button class="g" id="sw" style="width:100%">${t(mode==="login"?"no":"have")}</button></p></div>`;
+$("sw").onclick=()=>{mode=mode==="login"?"reg":"login";authView()};
+$("go").onclick=async()=>{
+const n=$("u").value.trim(),p=$("p").value,us=users();
+if(mode==="reg"){
+if(n.length<3||p.length<4){$("e").textContent=t("short");return}
+if(us.some(x=>x.name.toLowerCase()===n.toLowerCase())){$("e").textContent=t("exists");return}
+us.push({name:n,pw:await hash(p),admin:false,cap:0});store("users",us);cur=n;
+}else{
+const h=await hash(p),f=us.find(x=>x.name.toLowerCase()===n.toLowerCase()&&x.pw===h);
+if(!f){$("e").textContent=t("bad");return}cur=f.name;}
+try{sessionStorage.setItem("cur",cur)}catch(e){}
+tab=isAdmin()?"dash":"loans";main()};
+$("p").onkeydown=e=>{if(e.key==="Enter")$("go").click()};
+}
+const me=()=>users().find(x=>x.name===cur);
+const isAdmin=()=>{const m=me();return m&&m.admin};
+const LOC={ar:"ar-u-ca-gregory-nu-latn",id:"id-ID",en:"en-GB"};
+const fd=i=>new Date(i+"T00:00:00Z").toLocaleDateString(LOC[L],{timeZone:"UTC",day:"numeric",month:"long",year:"numeric"});
+const num=v=>+String(v).replace(/[٠-٩]/g,c=>c.charCodeAt(0)-1632).replace(/[۰-۹]/g,c=>c.charCodeAt(0)-1776).replace(/[٫,]/g,".")||0;
+function dateSel(id,v){const y0=new Date().getFullYear(),[Y,M,D]=(v||nowS()).split("-").map(Number);
+const mn=[...Array(12)].map((_,i)=>new Date(Date.UTC(2020,i,1)).toLocaleDateString(LOC[L],{timeZone:"UTC",month:"long"}));
+const o=(a,sel)=>a.map(([x,l])=>`<option value="${x}"${x===sel?" selected":""}>${l}</option>`).join("");
+return`<div class="dsel" id="${id}"><select data-p="d">${o([...Array(31)].map((_,i)=>[i+1,i+1]),D)}</select><select data-p="m">${o(mn.map((n,i)=>[i+1,n]),M)}</select><select data-p="y">${o([...Array(18)].map((_,i)=>[y0-1+i,y0-1+i]),Y)}</select></div>`}
+const gD=id=>{const e=$(id).querySelectorAll("select"),d=+e[0].value,m=+e[1].value,y=+e[2].value,n=new Date(Date.UTC(y,m,0)).getUTCDate();return y+"-"+String(m).padStart(2,"0")+"-"+String(Math.min(d,n)).padStart(2,"0")};
+const sD=(id,v)=>{const[y,m,d]=v.split("-").map(Number),e=$(id).querySelectorAll("select");e[0].value=d;e[1].value=m;if(![...e[2].options].some(o=>+o.value===y))e[2].add(new Option(y,y));e[2].value=y};
+const openB=new Set();let acV=null;
+function dlg({title,text,fields=[],ok,danger,check}){return new Promise(res=>{
+const o=document.createElement("div");o.className="ovl";
+o.innerHTML=`<div class="dlg" role="dialog" aria-modal="true" aria-label="${esc(title)}"><h3>${esc(title)}</h3>${text?`<p style="white-space:pre-line">${esc(text)}</p>`:""}${fields.map(f=>`<div class="fld"><label for="f_${f.id}">${esc(f.label)}</label>${f.type==="date"?dateSel("f_"+f.id,f.value):`<input id="f_${f.id}" type="${f.type==="password"?"password":"text"}" inputmode="${f.num?"decimal":"text"}" autocomplete="off" value="${esc(f.value||"")}" placeholder="${esc(f.ph||"")}">`}</div>`).join("")}<p class="err" id="f_err" style="margin:0"></p><div class="dact"><button class="${danger?"bad":""}" id="f_ok">${esc(ok||t("ok"))}</button><button class="g" id="f_no">${t("cancel")}</button></div></div>`;
+document.body.appendChild(o);
+const first=o.querySelector("input");if(first){first.focus();first.select()}else o.querySelector("#f_ok").focus();
+const close=v=>{document.removeEventListener("keydown",kd,true);o.remove();res(v)};
+const get=()=>{const v={};fields.forEach(f=>{v[f.id]=f.type==="date"?gD("f_"+f.id):(f.num?num($("f_"+f.id).value):f.type==="password"?$("f_"+f.id).value:$("f_"+f.id).value.trim())});return v};
+let busy=false;const submit=async()=>{if(busy)return;const v=get();for(const f of fields){if(f.req&&f.type!=="date"&&$("f_"+f.id).value.trim()===""){$("f_err").textContent=f.msg||"";$("f_"+f.id).focus();return}}busy=true;const er=check?await check(v):"";busy=false;if(er){$("f_err").textContent=er;return}close(v)};
+const kd=e=>{if(e.key==="Escape"){e.preventDefault();close(null)}else if(e.key==="Enter"&&e.target.tagName!=="BUTTON"){e.preventDefault();submit()}};
+document.addEventListener("keydown",kd,true);
+o.querySelector("#f_ok").onclick=submit;o.querySelector("#f_no").onclick=()=>close(null);o.onclick=e=>{if(e.target===o)close(null)};})}
+const bkey=l=>l.owner+"|"+l.name.trim().toLowerCase();
+const delay=l=>{if(l.paid||l.req){const e=l.paid?l.paidOn:l.reqOn;return e?Math.max(0,diff(e,l.due)):0}return Math.max(0,diff(nowS(),l.due))};
+const cts=l=>l.ts||parseInt(String(l.id).slice(0,8),36)||0;
+function groupsHtml(list,row){const g={};list.forEach(l=>{const k=bkey(l);(g[k]=g[k]||[]).push(l)});
+return Object.keys(g).sort((a,b)=>Math.max(...g[b].map(cts))-Math.max(...g[a].map(cts))).map(k=>{const x=g[k],sum=f=>x.reduce((n,l)=>n+f(l),0),late=x.filter(l=>st(l)==="over").length;
+let h=`<div class="box bcard"><div class="bh"><b>👤 ${esc(x[0].name.trim())}</b><span class="tag cn">${x.length} ${t("cnt")}</span>${isAdmin()||x[0].owner!==cur?`<span class="m" style="flex:0 0 auto;min-width:0">${t("regBy")}: <b>${esc(x[0].owner)}</b></span>`:""}${late?`<span class="tag t-over">${late} ${t("over")}</span>`:""}<span class="m">${t("sLent")}: ${fmt(sum(l=>l.amount))} · ${t("sBack")}: ${fmt(sum(l=>l.paid?0:l.total))} ${t("cur")}</span><button class="g hb" data-hist="${esc(k)}" title="${t("hist")}" aria-label="${t("hist")}">📜</button></div>`;
+if(openB.has(k)){h+=`<div class="tw hist"><table><tr><th>${t("start")}</th><th>${t("amt")}</th><th>${t("tot")}</th><th>${t("due")}</th><th>✔</th><th>${t("pOn")}</th><th>${t("dly")}</th><th>${t("shr")}</th></tr>`+x.slice().sort((a,b)=>cts(b)-cts(a)||b.start.localeCompare(a.start)).map(l=>{const q=st(l),d=delay(l);return`<tr><td>${fd(l.start)}</td><td>${fmt(l.amount)}</td><td>${fmt(l.total)}</td><td>${fd(l.due)}</td><td><span class="tag t-${q}">${q==="paid"?t("paidTag"):q==="over"?t("over"):q==="wait"?t("wait"):t("pend")}</span></td><td>${l.paid&&l.paidOn?fd(l.paidOn):"—"}</td><td>${d>0?t("lateN").replace("{n}",d):(l.paid||l.req?t("onT"):"—")}</td><td>${shCell(l)}</td></tr>`}).join("")+`</table></div>`}
+return h+`<div class="${x.length>2?"bscroll":""}">`+x.sort((a,b)=>cts(b)-cts(a)||b.start.localeCompare(a.start)).map(row).join("")+`</div></div>`}).join("")}
+const openS=new Set();
+const sh=l=>l.sh||[];
+const prof=l=>Math.round((l.total-l.amount)*100)/100;
+const shSum=l=>sh(l).reduce((n,x)=>n+x.a,0);
+const shMine=()=>{const k=cur.toLowerCase(),r=[];loans().forEach(l=>sh(l).forEach(x=>{if(isAdmin()||x.w.trim().toLowerCase()===k)r.push({l,a:x.a,w:x.w})}));loans().forEach(l=>{const q=prof(l)-shSum(l);if(q>0.001&&(isAdmin()||fundOf(l).toLowerCase()===k))r.push({l,a:q,w:t("adminRest")})});return r};
+function shPanel(l){const p=prof(l),d=shSum(l);
+return`<div class="shp"><div class="m">${t("profit")}: <b>${fmt(p)}</b> · ${t("sDist")}: <b>${fmt(d)}</b> · ${t("sRem")}: <b style="${p-d<0?"color:var(--bad)":""}">${fmt(p-d)}</b> ${t("cur")}</div>${p-d<0?`<div class="err">${t("sOver")}</div>`:""}`+sh(l).map((x,i)=>`<div class="shr"><span>${esc(x.w)}${users().some(z=>z.name.toLowerCase()===x.w.trim().toLowerCase())?"":` <small style="color:var(--warn)">⚠ ${t("noAcc")}</small>`}</span><b>${fmt(x.a)}</b><button class="bad" data-srm="${l.id}:${i}" aria-label="${t("del")}">×</button></div>`).join("")+`<div class="row"><input id="sw-${l.id}" list="su" placeholder="${t("sName")}" autocomplete="off"><input id="sa-${l.id}" type="text" inputmode="decimal" placeholder="${t("sAmt")}"><button data-sad="${l.id}">${t("sAdd")}</button></div><p class="err" id="se-${l.id}"></p></div>`}
+function mineHtml(){const r0=shMine().sort((a,b)=>cts(b.l)-cts(a.l)||b.l.start.localeCompare(a.l.start)),mn=nz(mq),r=mn?r0.filter(x=>nz(x.w).includes(mn)||nz(x.l.name).includes(mn)):r0,sm=f=>r.filter(f).reduce((n,x)=>n+x.a,0);
+const names=[...new Set(r0.map(x=>x.w.trim()).filter(Boolean))],sb=`<input type="text" id="ms" class="qs" list="msn" value="${esc(mq)}" placeholder="🔍 ${t("srch")}" aria-label="${t("srch")}" autocomplete="off"><datalist id="msn">${names.map(n=>`<option value="${esc(n)}">`).join("")}</datalist>`;
+if(!r0.length)return`<div class="box"><div class="empty">${t("sNone")}</div></div>`;
+const hit=mn?`<div class="box" style="border-color:#f28c28;background:rgba(242,140,40,.10)"><b>🔍 ${esc(mq.trim())}</b><div class="m" style="margin-top:6px;font-size:1.05em">${t("sColl")}: <b style="color:var(--ok);font-size:1.25em">${fmt(sm(x=>x.l.paid))}</b> ${t("cur")} · ${t("sPend")}: <b>${fmt(sm(x=>!x.l.paid))}</b> · ${t("sTot")}: <b>${fmt(sm(()=>true))}</b> · ${r.length}</div></div>`:"";
+return sb+hit+(r.length?"":`<div class="box"><div class="empty">${t("none")}</div></div>`)+`<div class="stats"><div class="stat"><b>${fmt(sm(()=>true))}</b><span>${t("sTot")}</span></div><div class="stat"><b>${fmt(sm(x=>x.l.paid))}</b><span>${t("sColl")}</span></div><div class="stat"><b>${fmt(sm(x=>!x.l.paid))}</b><span>${t("sPend")}</span></div></div><div class="box tw"><table><tr><th>${t("name")}</th><th>${t("owner")}</th><th>${t("fundr")}</th><th>${t("shOwner")}</th><th>${t("start")}</th><th>${t("due")}</th><th>${t("sAmt")}</th><th>✔</th></tr>`+r.map(x=>`<tr><td>${esc(x.l.name)}</td><td>${esc(x.l.owner)}</td><td>${esc(fundOf(x.l))}</td><td>${esc(x.w)}</td><td>${fd(x.l.start)}</td><td>${fd(x.l.due)}</td><td><b>${fmt(x.a)}</b></td><td><span class="tag t-${x.l.paid?"paid":"pend"}">${x.l.paid?t("sColl"):t("sPend")}</span></td></tr>`).join("")+`</table></div>`}
+const myShareHtml=l=>{const k=cur.toLowerCase(),a=sh(l).filter(x=>x.w.trim().toLowerCase()===k).reduce((n,x)=>n+x.a,0)+(fundOf(l).toLowerCase()===k?Math.max(0,prof(l)-shSum(l)):0);return a?`<div class="m" style="color:var(--ok);font-weight:700">💼 ${t("myShare")}: ${fmt(a)} ${t("cur")}</div>`:""}
+const shCell=l=>{const rest=Math.max(0,prof(l)-shSum(l)),fn=fundOf(l);if(isAdmin())return sh(l).map(x=>esc(x.w)+" "+fmt(x.a)).concat(rest>0?[esc(fn)+" ("+t("rest")+") "+fmt(rest)]:[]).join(" · ")||"—";const k=cur.toLowerCase(),m=sh(l).filter(x=>x.w.trim().toLowerCase()===k).map(x=>fmt(x.a));if(rest>0&&fn.toLowerCase()===k)m.push(fmt(rest));return m.join(" · ")||"—"};
+function reqHtml(){const r=loans().filter(l=>l.req);if(!r.length)return"";
+return`<div class="box"><h2>${t("fwait")}</h2>`+r.map(l=>`<div class="loan"><div><b>${esc(l.name)}</b> <span class="tag t-wait">${t("wait")}</span><div class="m">${fmt(l.total)} ${t("cur")} · ${t("owner")}: ${esc(l.owner)} · ${t("due")}: ${fd(l.due)}</div></div><div class="acts"><button class="ok" data-ap="${l.id}">${t("appr")}</button><button class="g" data-al="${l.id}">${t("allow")}</button></div></div>`).join("")+`</div>`}
+const fundOf=l=>l.fund||l.owner;
+const selD=new Set();
+const canDel1=l=>{const m=me();return !!(m&&(m.admin||(m.del&&l.owner===cur&&!l.paid&&!l.req)))};
+const allowedFunds=()=>{const us=users().map(u=>u.name);if(isAdmin())return us;const f=((me()||{}).funds||[]).filter(n=>us.includes(n));return f.length?f:[cur]};
+const enc=encodeURIComponent;
+const fundChips=u=>users().map(x=>`<button class="${(u.funds||[]).includes(x.name)?"ok":"g"}" data-fnd="${enc(u.name)}|${enc(x.name)}">${esc(x.name)}</button>`).join(" ");
+const outst=n=>loans().filter(l=>fundOf(l)===n&&!l.paid).reduce((a,l)=>a+l.amount,0);
+const capOf=n=>{const u=users().find(x=>x.name===n);return u&&u.cap!==undefined?u.cap:null};
+const nk=n=>String(n).trim().toLowerCase();
+const profitRows=n=>{const k=nk(n),r=[];loans().forEach(l=>{if(!l.paid)return;const a=sh(l).filter(x=>nk(x.w)===k).reduce((m,x)=>m+x.a,0)+(nk(fundOf(l))===k?Math.max(0,prof(l)-shSum(l)):0);if(a>0.001)r.push({l,a})});return r};
+const profitIn=n=>profitRows(n).reduce((m,x)=>m+x.a,0);
+const txs=n=>{const u=users().find(x=>x.name===n);return(u&&u.tx)||[]};
+const txSum=(n,k)=>txs(n).filter(x=>x.k===k&&!x.pending).reduce((m,x)=>m+x.a,0);
+const wdSum=(n,src)=>txs(n).filter(x=>x.k==="wd"&&!x.pending&&(x.src||"capital")===src).reduce((m,x)=>m+x.a,0);
+const capNow=n=>{const c=capOf(n);return c===null?null:c+txSum(n,"dep")-wdSum(n,"capital")};
+const pendSum=(n,src)=>txs(n).filter(x=>x.k==="wd"&&x.pending&&(x.src||"capital")===src).reduce((m,x)=>m+x.a,0);
+const profitAvail=n=>Math.max(0,profitIn(n)-wdSum(n,"profit")-pendSum(n,"profit"));
+const capFree=n=>{const c=capNow(n);return c===null?0:Math.max(0,c-outst(n)-pendSum(n,"capital"))};
+const avail=n=>{const c=capNow(n);return c===null?null:c+profitIn(n)-wdSum(n,"profit")-outst(n)-pendSum(n,"profit")-pendSum(n,"capital")};
+function wdForm(n){if(!(isAdmin()||n===cur))return"";const a=isAdmin();
+return`<div class="box"><h2>${a?t("doWd"):t("reqWd")}</h2><div class="grid"><div><label for="wdSrc">${t("wdFrom")}</label><select id="wdSrc"><option value="profit">${t("srcP")} (${fmt(profitAvail(n))})</option><option value="capital">${t("srcC")} (${fmt(capFree(n))})</option></select></div><div><label for="wdAmt">${t("sAmt")}</label><input id="wdAmt" type="text" inputmode="decimal"></div><div><label for="wdNote">${t("dNote")}</label><input id="wdNote"></div></div><p class="err" id="wdErr"></p><p><button id="wdGo" data-n="${esc(n)}">${a?t("doWd"):t("reqWd")}</button></p></div>`}
+function wdReqHtml(){const r=[];users().forEach(u=>(u.tx||[]).forEach(x=>{if(x.pending)r.push({u:u.name,x})}));if(!r.length)return"";
+return`<div class="box"><h2>${t("wdReqs")}</h2>`+r.map(({u,x})=>`<div class="loan"><div><b>${esc(u)}</b> <span class="tag t-wait">${t("pendWd")}</span><div class="m">${fmt(x.a)} ${t("cur")} · ${x.src==="profit"?t("srcP"):t("srcC")} · ${fd(x.d)}${x.n?" · "+esc(x.n):""}</div></div><div class="acts"><button class="ok" data-wda="${enc(u)}|${x.id}">${t("okWd")}</button><button class="bad" data-wdr="${enc(u)}|${x.id}">${t("rejWd")}</button></div></div>`).join("")+`</div>`}
+function acctHtml(n){const c=capOf(n);if(c===null)return`<div class="box"><div class="empty">${t("unl")}</div></div>`;
+const rows=[...txs(n).map((x,i)=>({i,ts:x.ts||0,d:x.d,s:(x.k==="dep"?t("kDep"):(x.src==="profit"?t("kWdP"):t("kWdC")))+(x.pending?" ("+t("pendWd")+")":""),a:x.k==="dep"?x.a:-x.a,n:x.n||"",pend:!!x.pending})),...profitRows(n).map(x=>({d:x.l.paidOn||x.l.due,s:t("kProfit")+" — "+x.l.name,a:x.a,n:""}))].sort((p,q)=>String(q.d).localeCompare(String(p.d))||(q.ts-p.ts)||((q.i||0)-(p.i||0)));
+const cd=[[avail(n),t("bAvail")],[capNow(n),t("capNow")],[Math.max(0,c-wdSum(n,"capital")),t("cap0")],[profitIn(n),t("pIn")],[profitAvail(n),t("profAv")],[txSum(n,"wd"),t("wdTot")],[outst(n),t("outL")]].concat(pendSum(n,"profit")+pendSum(n,"capital")>0?[[pendSum(n,"profit")+pendSum(n,"capital"),t("pendWd")]]:[]);
+return`<div class="stats">`+cd.map(([v,k],i)=>`<div class="stat"${i===0?' style="border-inline-start-color:var(--ok)"':""}><b>${fmt(v)}</b><span>${k}</span>${i===0?`<span style="display:block;color:var(--ink);font-weight:700;margin-top:2px">👤 ${t("balOwner")}: ${esc(n)}</span>`:""}</div>`).join("")+`</div>${wdForm(n)}<div class="box tw"><h2>${t("stmt")}</h2>`+(rows.length?`<table><tr><th>${t("dDate")}</th><th>${t("dDesc")}</th><th>${t("sAmt")}</th><th>${t("dNote")}</th></tr>`+rows.map(r=>`<tr><td>${fd(r.d)}${r.ts?`<div class="m">${new Date(r.ts).toLocaleTimeString(LOC[L],{hour:"2-digit",minute:"2-digit"})}</div>`:""}</td><td>${esc(r.s)}</td><td><b style="color:var(--${r.pend?"mute":r.a>=0?"ok":"bad"})">${r.a>=0?"+":"−"}${fmt(Math.abs(r.a))}</b></td><td>${esc(r.n)}</td></tr>`).join("")+`</table>`:`<div class="empty">—</div>`)+`</div>`}
+const balCards=()=>{const c=capOf(cur);if(c===null)return"";return`<div class="stat" style="border-inline-start-color:var(--ok)"><b>${fmt(avail(cur))}</b><span>${t("bAvail")}</span><span style="display:block;color:var(--ink);font-weight:700;margin-top:2px">👤 ${t("balOwner")}: ${esc(cur)}</span></div><div class="stat"><b>${fmt(capNow(cur))}</b><span>${t("capNow")}</span></div><div class="stat"><b>${fmt(Math.max(0,c-wdSum(cur,"capital")))}</b><span>${t("cap0")}</span></div><div class="stat"><b>${fmt(profitIn(cur))}</b><span>${t("pIn")}</span></div>${txSum(cur,"wd")?`<div class="stat"><b>${fmt(txSum(cur,"wd"))}</b><span>${t("wdTot")}</span></div>`:""}${pendSum(cur,"profit")+pendSum(cur,"capital")>0?`<div class="stat"><b>${fmt(pendSum(cur,"profit")+pendSum(cur,"capital"))}</b><span>${t("pendWd")}</span></div>`:""}`};
+const canDelete=()=>{const m=me();return !!(m&&(m.admin||m.del))};
+const canProfit=()=>{const m=me();return !!(m&&(m.admin||m.profit))};
+function dashHtml(){const a=loans(),us=users(),s=(x,f)=>x.reduce((n,l)=>n+f(l),0),pr=l=>l.total-l.amount,over=x=>x.filter(l=>st(l)==="over").length,an=users().filter(u=>u.admin).map(u=>u.name.toLowerCase()),net=x=>x.reduce((n,l)=>n+(an.includes(fundOf(l).toLowerCase())?Math.max(0,prof(l)-shSum(l)):0)+sh(l).filter(y=>an.includes(y.w.trim().toLowerCase())).reduce((m,y)=>m+y.a,0),0);
+let h=`<div class="stats">`+[[s(a,l=>l.amount),t("sLent")],[s(a.filter(l=>!l.paid),l=>l.total),t("sBack")],[s(a,pr),t("sProfit")],[s(a.filter(l=>l.paid),pr),t("sProfitGot")],[over(a),t("sLate")],[net(a),t("sNet")]].map(([v,k])=>`<div class="stat"><b>${fmt(v)}</b><span>${k}</span></div>`).join("")+`</div>`;
+h+=`<div class="box tw"><table><tr><th>${t("user")}</th><th>${t("cnt")}</th><th>${t("sLent")}</th><th>${t("sProfit")}</th><th>${t("sProfitGot")}</th><th>${t("sLate")}</th><th>${t("bAvail")}</th></tr>`+us.map(u=>{const x=a.filter(l=>l.owner===u.name);return`<tr><td>${esc(u.name)}</td><td>${x.length}</td><td>${fmt(s(x,l=>l.amount))}</td><td>${fmt(s(x,pr))}</td><td>${fmt(s(x.filter(l=>l.paid),pr))}</td><td>${over(x)}</td><td>${capOf(u.name)===null?"∞":fmt(avail(u.name))}</td></tr>`}).join("")+`</table></div>`
+const P={};a.forEach(l=>sh(l).forEach(x=>{const k=x.w.trim().toLowerCase(),o=P[k]=P[k]||{n:x.w,t:0,c:0};o.t+=x.a;if(l.paid)o.c+=x.a}));
+a.forEach(l=>{const r=prof(l)-shSum(l);if(r>0.001){const k=fundOf(l).trim().toLowerCase(),o=P[k]=P[k]||{n:fundOf(l),t:0,c:0};o.t+=r;if(l.paid)o.c+=r}});
+if(Object.keys(P).length)h+=`<div class="box tw"><h2>${t("sPer")}</h2><table><tr><th>${t("sName")}</th><th>${t("sTot")}</th><th>${t("sColl")}</th><th>${t("sPend")}</th></tr>`+Object.values(P).map(o=>`<tr><td>${esc(o.n)}</td><td>${fmt(o.t)}</td><td>${fmt(o.c)}</td><td>${fmt(o.t-o.c)}</td></tr>`).join("")+`</table></div>`;
+const L=a.filter(l=>prof(l)>0||sh(l).length).sort((x,y)=>cts(y)-cts(x)||y.start.localeCompare(x.start));
+if(L.length)h+=`<div class="box tw"><h2>${t("ledger")}</h2><table><tr><th>${t("name")}</th><th>${t("owner")}</th><th>${t("fundr")}</th><th>${t("start")}</th><th>${t("profit")}</th><th>${t("shr")}</th><th>${t("adminRest")}</th><th>✔</th></tr>`+L.map(l=>{const r=Math.max(0,prof(l)-shSum(l));return`<tr><td>${esc(l.name)}</td><td>${esc(l.owner)}</td><td>${esc(fundOf(l))}</td><td>${fd(l.start)}</td><td>${fmt(prof(l))}</td><td>${sh(l).map(x=>esc(x.w)+" "+fmt(x.a)).join(" · ")||"—"}</td><td><b>${fmt(r)}</b> ${r>0?`<small>(${esc(fundOf(l))})</small>`:""}</td><td><span class="tag t-${l.paid?"paid":"pend"}">${l.paid?t("sColl"):t("sPend")}</span></td></tr>`}).join("")+`</table></div>`;
+return h}
+
+function main(){
+setLang();if(!cur||!me()){cur=null;setLang();authView();return}
+const adm=isAdmin(),all=loans(),mine=adm?all:all.filter(l=>l.owner===cur),vis=adm?all:all.filter(l=>l.owner===cur||fundOf(l)===cur||sh(l).some(x=>x.w.trim().toLowerCase()===cur.toLowerCase()));
+const qn=nz(qry),base=vis.filter(l=>!qn||nz([l.name,l.owner,fundOf(l),...sh(l).map(x=>x.w)].join(" ")).includes(qn)),cnt=k=>k==="all"?base.length:base.filter(l=>st(l)===k).length,shown=base.filter(l=>flt==="all"||st(l)===flt).sort((a,b)=>a.due.localeCompare(b.due));
+const sum=(a,f)=>a.reduce((s,l)=>s+f(l),0);
+const alerts=(adm?(w=>w?`<div class="alert w">${t("nWait").replace("{n}",w)}</div>`:"")(all.filter(l=>l.req).length):"")+mine.filter(l=>!l.paid&&!l.req).map(l=>{const d=diff(nowS(),l.due);
+if(d>0)return`<div class="alert">⚠ ${t("aOver").replace("{n}",esc(l.name)).replace("{a}",fmt(l.total)+" "+t("cur")).replace("{d}",d)}</div>`;
+if(d>=-1)return`<div class="alert w">⏰ ${t("aSoon").replace("{n}",esc(l.name)).replace("{a}",fmt(l.total)+" "+t("cur")).replace("{when}",d===0?t("today"):t("tom"))}</div>`;return""}).join("");
+let h="",delList=[];
+const wn0=adm?all.filter(l=>l.req).length:0,pw0=adm?users().reduce((m,u)=>m+(u.tx||[]).filter(x=>x.pending).length,0):0;
+if(!adm)h+=`<div class="tabs">`+[["loans",t("loans")],["mine",t("sMine")],["acct",t("acct")]].map(([k,v])=>`<button class="${tab===k?"on":"g"}" data-tab="${k}">${v}</button>`).join("")+`</div>`;
+if(adm)h+=`<div class="box" style="border-color:var(--gold)"><b>${t("adm")}</b> <span class="badge">${esc(cur)}</span>
+<div class="tabs" style="margin:10px 0 0"><button class="${tab==="dash"?"on":"g"}" data-tab="dash">${t("dash")}${wn0+pw0>0?` <span class="tag t-over" style="margin-inline-start:4px">${wn0+pw0}</span>`:""}</button><button class="${tab==="loans"?"on":"g"}" data-tab="loans">${t("loans")}</button><button class="${tab==="mine"?"on":"g"}" data-tab="mine">${t("allSh")}</button><button class="${tab==="acct"?"on":"g"}" data-tab="acct">${t("acct")}</button><button class="${tab==="users"?"on":"g"}" data-tab="users">${t("users")}</button></div></div>`;
+if(adm)h+=`<datalist id="su">${users().map(u=>`<option value="${esc(u.name)}">`).join("")}</datalist>`;
+if(adm&&tab!=="dash"&&wn0+pw0>0)h+=`<button class="alert w" data-tab="dash" style="display:block;width:100%;text-align:start;cursor:pointer;font:inherit;font-weight:700">${wn0?t("nWait").replace("{n}",wn0):""}${wn0&&pw0?" · ":""}${pw0?t("nWdW").replace("{n}",pw0):""} <u>${t("goTo")}</u></button>`;
+if(tab==="dash"&&adm){const wn=wn0;h+=(wn+pw0?`<div class="alert w">${wn?t("nWait").replace("{n}",wn):""}${wn&&pw0?" · ":""}${pw0?t("nWdW").replace("{n}",pw0):""}</div>`:"")+reqHtml()+wdReqHtml()+dashHtml()}else if(tab==="mine"){h+=mineHtml()}else if(tab==="acct"){h+=acctHtml(cur)}else if(tab==="users"&&adm){
+h+=`<div class="box tw"><table><tr><th>${t("user")}</th><th>${t("role")}</th><th>${t("canSee")}</th><th>${t("canDel")}</th><th>${t("bAvail")} / ${t("bCap")}</th><th>${t("lendFrom")}</th><th></th></tr>`+users().map(u=>`<tr><td>${esc(u.name)}</td><td>${u.admin?t("admin"):(u.funds||[]).length?`<span class="badge">${t("coll")}</span>`:t("usr")}</td><td>${u.admin?t("yes"):`<button class="${u.profit?"ok":"g"}" data-pf="${esc(u.name)}">${u.profit?t("yes"):t("no")}</button>`}</td><td>${u.admin?t("yes"):`<button class="${u.del?"ok":"g"}" data-pdl="${esc(u.name)}">${u.del?t("yes"):t("no")}</button>`}</td><td>${u.cap===undefined?"∞":fmt(avail(u.name))+" / "+fmt(capNow(u.name))}<div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;min-width:150px"><button class="g" data-cap="${esc(u.name)}" title="${t("cap0")}" aria-label="${t("cap0")}">✎</button><button class="g" data-dep="${esc(u.name)}" title="${t("dep")}" aria-label="${t("dep")}">➕</button><button class="g" data-wd="${esc(u.name)}" title="${t("wd")}" aria-label="${t("wd")}">➖</button><button class="g" data-pw="${enc(u.name)}" title="${t("chPw")}" aria-label="${t("chPw")}">🔑</button><button class="g" data-ac="${esc(u.name)}" title="${t("stmt")}" aria-label="${t("stmt")}">📒</button></div></td><td style="white-space:normal"><div style="display:flex;gap:4px;flex-wrap:wrap;min-width:150px">${u.admin?"—":fundChips(u)}</div></td><td>${u.name===cur?"":`<button class="g" data-role="${esc(u.name)}">${u.admin?t("rm"):t("mk")}</button> <button class="bad" data-du="${esc(u.name)}">${t("del")}</button>`}</td></tr>`).join("")+`</table></div>`;
+if(acV&&users().some(z=>z.name===acV))h+=`<div class="box"><h2>📒 ${esc(acV)}</h2></div>`+acctHtml(acV);
+}else{
+h+=alerts;
+if(capOf(cur)===0&&allowedFunds().length===1&&allowedFunds()[0]===cur)h+=`<div class="alert w">ℹ ${t("noCap")}</div>`;
+h+=`<div class="stats">${balCards()}${canProfit()?`<div class="stat"><b>${fmt(sum(mine,l=>l.amount))}</b><span>${t("sLent")}</span></div><div class="stat"><b>${fmt(sum(mine.filter(l=>!l.paid),l=>l.total))}</b><span>${t("sBack")}</span></div><div class="stat"><b>${fmt(sum(mine.filter(l=>l.paid),l=>l.total))}</b><span>${t("sGot")}</span></div><div class="stat"><b>${mine.filter(l=>st(l)==="over").length}</b><span>${t("sLate")}</span></div>`:""}${canProfit()?`<div class="stat"><b>${fmt(sum(mine,l=>l.total-l.amount))}</b><span>${t("sProfit")}</span></div><div class="stat"><b>${fmt(sum(mine.filter(l=>l.paid),l=>l.total-l.amount))}</b><span>${t("sProfitGot")}</span></div>`:""}</div>`;
+h+=`<div class="box"><h2>${t("add")}</h2><div class="grid">
+<div><label for="n">${t("name")}</label><input id="n" list="bn" autocomplete="off"><datalist id="bn">${[...new Set(all.filter(l=>l.owner===cur).map(l=>l.name.trim()))].map(n=>`<option value="${esc(n)}">`).join("")}</datalist></div>
+${allowedFunds().length>1||allowedFunds()[0]!==cur?`<div><label for="fu">${t("fundr")}</label><select id="fu">${allowedFunds().map(n=>`<option value="${esc(n)}"${n===allowedFunds()[0]?" selected":""}>${esc(n)}</option>`).join("")}</select><div class="m" id="fb"></div></div>`:""}
+<div><label for="a">${t("amt")}</label><input id="a" type="text" min="1" step="any" inputmode="decimal" placeholder="100" autocomplete="off"></div>
+<div><label for="r">${t("profit")}</label><input id="r" type="text" min="0" step="any" inputmode="decimal" placeholder="10" autocomplete="off"></div>
+<div><label for="d">${t("days")}</label><input id="d" type="text" min="1" inputmode="numeric" value="30"></div>
+<div class="dw"><label>${t("start")}</label>${dateSel("s",nowS())}</div>
+<div><label>${t("tot")}</label><input id="tt" readonly></div>
+<div class="dw"><label>${t("due")}</label>${dateSel("dd",addD(nowS(),30))}</div></div>
+<p class="err" id="fe"></p><p><button id="sv">${t("save")}</button></p></div>`;
+h+=`<input type="text" id="qs" class="qs" value="${esc(qry)}" placeholder="🔍 ${t("srch")}" aria-label="${t("srch")}" autocomplete="off">`+`<div class="tabs">`+[["all",t("flt")],["pend",t("pend")],["over",t("over")],["wait",t("fwait")],["paid",t("paidTag")]].map(([k,v])=>`<button class="${flt===k?"on":"g"}" data-f="${k}">${v} <span class="cn2">${cnt(k)}</span></button>`).join("")+`</div>`;
+const row=l=>{const s=st(l),dl=diff(l.due,nowS()),soon=!l.paid&&!l.req&&(dl===0||dl===1),lk=!adm&&(l.owner!==cur||l.paid||l.req),acts=lk?"":l.req?`<button class="ok" data-ap="${l.id}">${t("appr")}</button><button class="g" data-al="${l.id}">${t("allow")}</button>`:(l.paid?`<button class="g" data-up="${l.id}">${t("allow")}</button>`:`<button class="ok" data-pd="${l.id}">${t("paid")}</button>`)+`<button class="g" data-ed="${l.id}">${t("edit")}</button>`+(canDelete()?`<button class="bad" data-dl="${l.id}">${t("del")}</button>`:"");return`<div class="loan ${s==="wait"?"wait":""} ${soon?"soon":""}"><div><b>${esc(l.name)}</b> <span class="tag t-${s}">${s==="paid"?t("paidTag"):s==="over"?t("over"):s==="wait"?t("wait"):t("pend")}</span>${soon?`<div class="soonmsg">⏰ ${t(dl===1?"oneDay":"dueToday")}</div>`:""}${myShareHtml(l)}
+<div class="m">${fmt(l.amount)} → <b>${fmt(l.total)}</b> ${t("cur")}${canProfit()?` (+${fmt(l.total-l.amount)})`:""}</div>
+<div class="m">${t("start")}: ${fd(l.start)} · ${t("days")}: ${l.days} · ${t("due")}: <b>${fd(l.due)}</b>${!l.paid&&dl>=0?` · ${t("left")} ${dl} ${t("days_")}`:""}</div>
+<div class="m" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center"><span class="who f">${t("fundr")}: <b>${esc(fundOf(l))}</b></span>${adm||l.owner!==cur?`<span class="who o">${t("owner")}: <b>${esc(l.owner)}</b></span>`:""}</div></div>
+<div class="acts">${canDel1(l)?`<input type="checkbox" data-sel="${l.id}" style="width:auto;align-self:center" ${selD.has(l.id)?"checked":""} aria-label="${t("del")}">`:""}${acts}${adm?`<button class="${sh(l).length?"g shy":"g shn"}" data-sh="${l.id}" title="${sh(l).length?t("shr"):t("shNone")}" aria-label="${sh(l).length?t("shr"):t("shNone")}">${sh(l).length?"💼 "+sh(l).length:"⚠ 💼"}</button>`:""}</div>${adm&&openS.has(l.id)?shPanel(l):""}</div>`};
+delList=shown.filter(canDel1);[...selD].forEach(i=>{if(!delList.some(l=>l.id===i))selD.delete(i)});
+if(delList.length)h+=`<div class="box row" style="align-items:center;padding:10px 16px"><label style="display:flex;gap:8px;align-items:center;margin:0;color:var(--ink);flex:1"><input type="checkbox" id="selAll" style="width:auto" ${delList.every(l=>selD.has(l.id))?"checked":""}> ${t("selAll")} (${delList.length})</label><button class="bad" id="delSel" style="flex:0 0 auto" ${selD.size?"":"disabled"}>${t("delSel")} (${selD.size})</button></div>`;
+h+=shown.length?`<div class="gscroll">${groupsHtml(shown,row)}</div>`:`<div class="box"><div class="empty">${t("none")}</div></div>`;
+}
+$("app").innerHTML=h;
+document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{tab=b.dataset.tab;main()});
+if($("ms"))$("ms").oninput=()=>{const p=$("ms").selectionStart;mq=$("ms").value;main();const q=$("ms");if(q){q.focus();try{q.setSelectionRange(p,p)}catch(e){}}};
+if($("qs"))$("qs").oninput=()=>{const p=$("qs").selectionStart;qry=$("qs").value;main();const q=$("qs");if(q){q.focus();try{q.setSelectionRange(p,p)}catch(e){}}};
+document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{flt=b.dataset.f;main()});
+const upd=(id,fn)=>{const a=loans(),l=a.find(x=>x.id===id);if(l){fn(l);store("loans",a);main()}};
+document.querySelectorAll("[data-pd]").forEach(b=>b.onclick=()=>upd(b.dataset.pd,l=>{if(isAdmin()){l.paid=true;l.req=false;l.paidOn=nowS()}else if(l.owner===cur&&!l.paid){l.req=true;l.reqOn=nowS()}}));
+document.querySelectorAll("[data-hist]").forEach(b=>b.onclick=()=>{const k=b.dataset.hist;openB.has(k)?openB.delete(k):openB.add(k);main()});
+document.querySelectorAll("[data-sh]").forEach(b=>b.onclick=()=>{const k=b.dataset.sh;openS.has(k)?openS.delete(k):openS.add(k);main()});
+document.querySelectorAll("[data-sad]").forEach(b=>b.onclick=()=>{if(!isAdmin())return;const id=b.dataset.sad,w=$("sw-"+id).value.trim(),a=num($("sa-"+id).value),e=$("se-"+id),arr=loans(),l=arr.find(x=>x.id===id);if(!l)return;
+if(!w||!(a>0)){e.textContent=t("sBad");return}
+const u=users().find(z=>z.name.toLowerCase()===w.toLowerCase());l.sh=sh(l).concat([{w:u?u.name:w,a}]);store("loans",arr);main()});
+document.querySelectorAll("[data-srm]").forEach(b=>b.onclick=()=>{if(!isAdmin())return;const[id,i]=b.dataset.srm.split(":"),arr=loans(),l=arr.find(x=>x.id===id);if(l){l.sh=sh(l).filter((_,j)=>j!==+i);store("loans",arr);main()}});
+document.querySelectorAll("[data-ap]").forEach(b=>b.onclick=()=>upd(b.dataset.ap,l=>{if(isAdmin()){l.paid=true;l.req=false;l.paidOn=l.reqOn||nowS()}}));
+document.querySelectorAll("[data-al]").forEach(b=>b.onclick=()=>upd(b.dataset.al,l=>{if(isAdmin()){l.req=false;delete l.reqOn}}));
+document.querySelectorAll("[data-up]").forEach(b=>b.onclick=()=>upd(b.dataset.up,l=>{if(isAdmin()){l.paid=false;l.req=false;delete l.paidOn;delete l.reqOn}}));
+document.querySelectorAll("[data-ed]").forEach(b=>b.onclick=async()=>{const l0=loans().find(x=>x.id===b.dataset.ed);if(!l0)return;if(!isAdmin()&&(l0.paid||l0.req||l0.owner!==cur))return;
+const v=await dlg({title:t("edit")+" — "+l0.name,fields:[{id:"n",label:t("name"),value:l0.name,req:1,msg:t("eName")},{id:"d",label:t("due"),type:"date",value:l0.due}],ok:t("saveB"),check:v=>v.d<l0.start?t("eDue"):""});if(!v)return;
+upd(l0.id,l=>{l.name=v.n;l.due=v.d;l.days=Math.max(1,diff(l.due,l.start))})});
+document.querySelectorAll("[data-dl]").forEach(b=>b.onclick=async()=>{const x=loans().find(z=>z.id===b.dataset.dl);if(!x||!canDelete()||(!isAdmin()&&(x.owner!==cur||x.paid||x.req)))return;if(await dlg({title:t("del"),text:t("sure")+" — "+x.name,ok:t("del"),danger:1})){store("loans",loans().filter(z=>z.id!==x.id));main()}});
+document.querySelectorAll("[data-pf]").forEach(b=>b.onclick=()=>{const u=users(),x=u.find(z=>z.name===b.dataset.pf);x.profit=!x.profit;store("users",u);main()});
+document.querySelectorAll("[data-cap]").forEach(b=>b.onclick=async()=>{if(!isAdmin())return;const u=users(),x=u.find(z=>z.name===b.dataset.cap);if(!x)return;
+const v=await dlg({title:t("cap0")+" — "+x.name,fields:[{id:"v",label:t("cap0"),value:x.cap===undefined?"":String(x.cap),num:1,req:1,msg:t("eAmt")}],ok:t("saveB")});if(!v)return;
+x.cap=Math.max(0,v.v);store("users",u);main()});
+document.querySelectorAll("[data-fnd]").forEach(b=>b.onclick=()=>{if(!isAdmin())return;const[a,c]=b.dataset.fnd.split("|").map(decodeURIComponent),u=users(),x=u.find(z=>z.name===a);if(!x)return;const f=x.funds||[];x.funds=f.includes(c)?f.filter(n=>n!==c):f.concat([c]);store("users",u);main()});
+document.querySelectorAll("[data-sel]").forEach(b=>b.onchange=()=>{b.checked?selD.add(b.dataset.sel):selD.delete(b.dataset.sel);const bt=$("delSel");if(bt){bt.disabled=!selD.size;bt.textContent=t("delSel")+" ("+selD.size+")"}const sa=$("selAll");if(sa)sa.checked=delList.every(l=>selD.has(l.id))});
+if($("selAll"))$("selAll").onchange=e=>{delList.forEach(l=>e.target.checked?selD.add(l.id):selD.delete(l.id));main()};
+if($("delSel"))$("delSel").onclick=async()=>{const ids=[...selD],ok=loans().filter(l=>ids.includes(l.id)&&canDel1(l)).map(l=>l.id);if(!ok.length)return;if(await dlg({title:t("delSel"),text:t("sureN").replace("{n}",ok.length),ok:t("del"),danger:1})){store("loans",loans().filter(l=>!ok.includes(l.id)));selD.clear();main()}};
+document.querySelectorAll("[data-ac]").forEach(b=>b.onclick=()=>{if(!isAdmin())return;acV=acV===b.dataset.ac?null:b.dataset.ac;main()});
+document.querySelectorAll("[data-wd]").forEach(b=>b.onclick=()=>{if(!isAdmin())return;acV=b.dataset.wd;main()});
+document.querySelectorAll("[data-dep]").forEach(b=>b.onclick=async()=>{if(!isAdmin())return;const u=users(),x=u.find(z=>z.name===b.dataset.dep);if(!x)return;
+if(x.cap===undefined){await dlg({title:t("dep")+" — "+x.name,text:t("setCapFirst")});return}
+const v=await dlg({title:t("dep")+" — "+x.name,text:t("askDep"),fields:[{id:"a",label:t("sAmt"),num:1,req:1,msg:t("eAmt")},{id:"n",label:t("askNote"),value:""}],ok:t("saveB"),check:v=>v.a>0?"":t("eAmt")});if(!v)return;
+x.tx=(x.tx||[]).concat([{ts:Date.now(),id:Date.now().toString(36),k:"dep",a:v.a,d:nowS(),n:v.n}]);store("users",u);main()});
+if($("wdGo"))$("wdGo").onclick=async()=>{const n=$("wdGo").dataset.n,src=$("wdSrc").value,a=num($("wdAmt").value),nt=$("wdNote").value.trim(),e=$("wdErr");
+if(!isAdmin()&&n!==cur)return;
+if(!(a>0)){e.textContent=t("eAmt");return}
+const lim=src==="profit"?profitAvail(n):capFree(n);if(a>lim+0.001){e.textContent=t("noFund")+": "+fmt(lim);return}
+if(!await dlg({title:t("cfmWd"),text:fmt(a)+" "+t("cur")+" · "+(src==="profit"?t("srcP"):t("srcC"))+" · "+n+"\n"+(isAdmin()?t("wdNow"):t("wdNeeds")),ok:isAdmin()?t("doWd"):t("reqWd"),danger:1}))return;
+const u=users(),x=u.find(z=>z.name===n);if(!x)return;const tx={ts:Date.now(),id:Date.now().toString(36)+Math.random().toString(36).slice(2,5),k:"wd",a,d:nowS(),n:nt,src};if(!isAdmin())tx.pending=true;
+x.tx=(x.tx||[]).concat([tx]);store("users",u);main()};
+document.querySelectorAll("[data-wda],[data-wdr]").forEach(b=>b.onclick=()=>{if(!isAdmin())return;const ok=b.dataset.wda!==undefined,[nm,id]=(ok?b.dataset.wda:b.dataset.wdr).split("|"),n=decodeURIComponent(nm),u=users(),x=u.find(z=>z.name===n),tx=x&&(x.tx||[]).find(q=>q.id===id);if(!tx)return;
+if(ok){delete tx.pending;tx.d=nowS()}else x.tx=x.tx.filter(q=>q!==tx);
+store("users",u);main()});
+document.querySelectorAll("[data-pdl]").forEach(b=>b.onclick=()=>{const u=users(),x=u.find(z=>z.name===b.dataset.pdl);x.del=!x.del;store("users",u);main()});
+document.querySelectorAll("[data-role]").forEach(b=>b.onclick=()=>{const u=users(),x=u.find(z=>z.name===b.dataset.role);x.admin=!x.admin;store("users",u);main()});
+document.querySelectorAll("[data-pw]").forEach(b=>b.onclick=async()=>{if(!isAdmin())return;const n=decodeURIComponent(b.dataset.pw);const v=await dlg({title:t("pwFor")+": "+n,fields:[{id:"n",label:t("pwNew"),type:"password",req:1,msg:t("pwShort")},{id:"c",label:t("pwConf"),type:"password",req:1,msg:t("pwConf")}],ok:t("saveB"),check:v=>v.n.length<4?t("pwShort"):v.n!==v.c?t("pwMis"):""});if(!v)return;const u=users(),x=u.find(z=>z.name===n);if(!x)return;x.pw=await hash(v.n);store("users",u);await dlg({title:t("chPw"),text:"✔ "+t("pwDone")+" — "+n,ok:t("ok")})});
+document.querySelectorAll("[data-du]").forEach(b=>b.onclick=async()=>{if(await dlg({title:t("del"),text:t("sure")+" — "+b.dataset.du,ok:t("del"),danger:1})){const n=b.dataset.du;store("users",users().filter(z=>z.name!==n).map(z=>Object.assign(z,{funds:(z.funds||[]).filter(f=>f!==n)})));store("loans",loans().filter(l=>l.owner!==n));main()}});
+if($("sv")){
+const calc=()=>{const a=num($("a").value)||0,r=num($("r").value)||0;$("tt").value=fmt(a+r)+" "+t("cur");if($("fu")){const v=avail($("fu").value);$("fb").textContent=v===null?"":t("bAvail")+": "+fmt(v)+" "+t("cur")}};
+const fromDays=()=>{sD("dd",addD(gD("s"),Math.max(0,num($("d").value))));calc()};
+let man=false;$("r").oninput=()=>{man=true;calc()};$("a").oninput=()=>{if(!man)$("r").value=Math.round((num($("a").value)||0)*10)/100;calc()};$("d").oninput=fromDays;if($("fu"))$("fu").onchange=calc;$("s").onchange=fromDays;
+$("dd").onchange=()=>{$("d").value=Math.max(1,diff(gD("dd"),gD("s")))};
+fromDays();
+$("sv").onclick=()=>{const n=$("n").value.trim(),a=num($("a").value),r=num($("r").value)||0,s=gD("s"),due=gD("dd"),d=Math.max(1,diff(due,s));
+const fe=m=>{$("fe").textContent=m};
+if(!n){fe(t("eName"));$("n").focus();return}
+if(!(a>0)){fe(t("eAmt"));$("a").focus();return}
+const fnd=$("fu")?$("fu").value:allowedFunds()[0];if(!allowedFunds().includes(fnd))return;const av=avail(fnd);if(av!==null&&a>av+0.001){fe(t("eBal").replace("{n}",fmt(av)+" "+t("cur")));$("a").focus();return}
+if(!(r>=0)){fe(t("eRepay"));$("r").focus();return}
+if(!s||!due||due<s){fe(t("eDue"));$("dd").focus();return}
+const all=loans();all.push({ts:Date.now(),id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),owner:cur,fund:fnd,name:(all.find(z=>z.owner===cur&&z.name.trim().toLowerCase()===n.toLowerCase())||{name:n}).name.trim(),amount:a,pct:Math.round(r/a*10000)/100,total:Math.round((a+r)*100)/100,days:d,start:s,due:due,paid:false});
+store("loans",all);main();if($("n"))$("n").focus()}}
+}
+$("lang").onchange=e=>{L=e.target.value;try{localStorage.setItem("lang",L)}catch(x){}cur?main():(setLang(),authView())};
+$("pwb").onclick=async()=>{const m=me();if(!m)return;const v=await dlg({title:t("chPw"),fields:[{id:"o",label:t("pwOld"),type:"password",req:1,msg:t("pwOld")},{id:"n",label:t("pwNew"),type:"password",req:1,msg:t("pwShort")},{id:"c",label:t("pwConf"),type:"password",req:1,msg:t("pwConf")}],ok:t("saveB"),check:async v=>{if(v.n.length<4)return t("pwShort");if(v.n!==v.c)return t("pwMis");if(await hash(v.o)!==m.pw)return t("pwBad");return""}});if(!v)return;const u=users(),x=u.find(z=>z.name===cur);if(!x)return;x.pw=await hash(v.n);store("users",u);await dlg({title:t("chPw"),text:"✔ "+t("pwDone"),ok:t("ok")})};
+$("out").onclick=()=>{cur=null;try{sessionStorage.removeItem("cur")}catch(e){}tab="loans";setLang();authView()};
+(async()=>{await seed();try{cur=sessionStorage.getItem("cur")}catch(e){}cur&&me()?main():(cur=null,setLang(),authView())})();
+</script>
+</body>
+</html>

@@ -298,7 +298,7 @@ const plFmtT=x=>{try{return new Date(x).toLocaleString(L==="ar"?"ar-u-nu-latn-ca
 const plBadge=l=>{const p=PL.get(l.id),can=isAdmin()||l.owner===cur;if(!p&&!can)return"";return`<div class="plb">${p?`<span class="tag ${p.accepted_at?"t-paid":"t-pend"}">${p.accepted_at?t("plOk"):"📝 "+t("plWait")}</span>${p.accepted_at?` <span class="m">${plFmtT(p.accepted_at)}</span>`:""}${plChanged(p,l)?` <span class="tag t-over">${t("plChg")}</span>`:""} `:""}<button class="g" data-pl="${l.id}">${p?t("plBtn"):t("plMk")+" 📝"}</button></div>`};
 const plPhChk=v=>v.ph&&v.ph.replace(/[^0-9٠-٩]/g,"").length<7?t("plPhInv"):"";
 const canPhone=()=>{const m=me();return !!(m&&(m.admin||m.phe))};
-const plAsk=()=>dlg({title:t("plT"),text:t("plAsk")+"\n"+t("plNote"),fields:!canPhone()?[]:[{id:"ph",label:t("plPh"),ph:t("plPhHint")}],ok:t("plMk"),check:plPhChk});
+const plAsk=()=>dlg({title:t("plT"),text:t("plAsk")+"\n"+t("plNote"),fields:[{id:"ph",label:t("plPh"),ph:t("plPhHint")}],ok:t("plMk"),check:plPhChk});
 async function plMake(l,ph){const p={phone:ph||null,token:plTok(),loan_id:l.id,borrower:l.name,lender:fundOf(l),amount:l.amount,total:l.total,due:l.due,start:l.start,lang:L};const r=await sb.from("pledges").insert(p).select("token,loan_id,borrower,lender,amount,total,due,start,lang,accepted_at,accepted_name,phone");if(r.error||!r.data||!r.data.length){toast(t("plFail")+(r.error?": "+r.error.message:""));return null}PL.set(l.id,r.data[0]);return r.data[0]}
 function plShow(l){return new Promise(res=>{const p=PL.get(l.id);if(!p){res();return}const url=plUrl(p.token),msg=p.borrower+"، "+t("plMsg")+"\n"+url;
 const o=document.createElement("div");o.className="ovl";

@@ -134,7 +134,7 @@ const am=new Map(a.map(x=>[x.id,x.doc])),us=new Map(),ls=new Map();
 p.forEach(r=>{const o=Object.assign({},am.get(r.id)||{},{id:r.id,name:r.name,admin:r.is_admin});if(!am.has(r.id))o.hid=true;us.set(r.id,JSON.stringify(o))});
 lo.forEach(r=>ls.set(r.id,JSON.stringify(r.doc)));
 DB={users:us,loans:ls}}
-const sig=()=>[...DB.users.values(),"|",...DB.loans.values(),"|",...[...PL.values()].map(x=>x.token+(x.accepted_at||""))].join("\u0001");
+const sig=()=>[...DB.users.values(),"|",...DB.loans.values(),"|",...[...PL.values()].map(x=>x.token+(x.accepted_at||"")+(x.phone||""))].join("\u0001");
 async function push([kind,k,o,old]){
 const ok=r=>{if(r.error)throw r.error;if(r.data!==null&&Array.isArray(r.data)&&!r.data.length)throw new Error("denied")};
 if(k==="loans"){
@@ -303,7 +303,7 @@ async function plMake(l,ph){const p={phone:ph||null,token:plTok(),loan_id:l.id,b
 function plShow(l){return new Promise(res=>{const p=PL.get(l.id);if(!p){res();return}const url=plUrl(p.token),msg=p.borrower+"، "+t("plMsg")+"\n"+url;
 const o=document.createElement("div");o.className="ovl";
 o.innerHTML=`<div class="dlg" role="dialog" aria-modal="true"><h3>📝 ${t("plT")}</h3><div class="plx">${esc(plText(p,L))}</div>${p.phone?`<p class="m" style="margin:10px 0 0">📱 ${t("plPh").replace(/ \(.*\)| \(.*$/,"")}: <b dir="ltr">${esc(p.phone)}</b></p>`:""}<p style="margin:10px 0 4px">${p.accepted_at?`<span class="tag t-paid">${t("plOk")}</span> <span class="m">${t("plBy")}: <b>${esc(p.accepted_name||"")}</b> · ${t("plOn")} ${plFmtT(p.accepted_at)}</span>`:`<span class="tag t-pend">${t("plWait")}</span>`}${plChanged(p,l)?` <span class="tag t-over">${t("plChg")}</span>`:""}</p>${p.accepted_at?"":`<label>${t("plLink")}</label><input id="pl_u" readonly value="${esc(url)}" dir="ltr" style="text-align:left"><div class="dact" style="margin-top:8px"><button id="pl_c">${t("plCopy")}</button><a id="pl_w" class="btnl" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(msg)}">${t("plWa")}</a></div>`}<p class="m" style="font-size:.78rem;margin:8px 0 0">${t("plNote")}</p><div class="dact">${!p.accepted_at&&canPhone()&&(isAdmin()||l.owner===cur)?`<button id="pl_e">✏️ ${t("plEdPh")}</button>`:""}${!p.accepted_at&&(isAdmin()||l.owner===cur)?`<button class="bad" id="pl_d">${t("plDel")}</button>`:""}<button class="g" id="pl_x">${t("plClose")}</button></div></div>`;
-document.body.appendChild(o);const close=()=>{document.removeEventListener("keydown",kd,true);o.remove();res()};const kd=e=>{if(e.key==="Escape"){e.preventDefault();close()}};document.addEventListener("keydown",kd,true);
+document.body.appendChild(o);const close=()=>{document.removeEventListener("keydown",kd,true);document.removeEventListener("dbchg",dc);o.remove();res()};const kd=e=>{if(e.key==="Escape"){e.preventDefault();close()}};document.addEventListener("keydown",kd,true);const dc=()=>{if(document.querySelectorAll(".ovl").length>1)return;const l2=loans().find(x=>x.id===l.id);close();if(l2&&PL.get(l2.id))plShow(l2)};document.addEventListener("dbchg",dc);
 o.querySelector("#pl_x").onclick=close;o.onclick=e=>{if(e.target===o)close()};
 const c=o.querySelector("#pl_c");if(c)c.onclick=async()=>{const i=o.querySelector("#pl_u");try{await navigator.clipboard.writeText(url)}catch(e){i.select();document.execCommand("copy")}toast(t("plCopied"),true)};
 const e=o.querySelector("#pl_e");if(e)e.onclick=async()=>{const v=await dlg({title:t("plEdPh"),fields:[{id:"ph",label:t("plPh"),ph:t("plPhHint"),value:p.phone||""}],ok:t("ok"),check:plPhChk});if(!v)return;const r=await sb.rpc("set_pledge_phone",{tok:p.token,ph:v.ph});if(r.error){toast(t("plFail"));return}p.phone=v.ph||null;PL.set(l.id,p);close();main();plShow(l)};
@@ -463,7 +463,8 @@ if(PTOK&&sb){setLang();pledgeView();return}
 if(!sb){setLang();authView();$("e").textContent=t("noLib");return}
 try{const r=await sb.auth.getSession();if(r.data&&r.data.session){UID=r.data.session.user.id;await pull();const m=users().find(x=>x.id===UID);if(m){cur=m.name;tab=isAdmin()?"dash":"loans";main();return}}}catch(e){console.error(e)}
 cur=null;setLang();authView()})();
-setInterval(async()=>{if(!cur||document.hidden||inflight||document.querySelector(".ovl"))return;const ae=document.activeElement;if(ae&&/^(INPUT|SELECT|TEXTAREA)$/.test(ae.tagName))return;const b=sig();try{await pull()}catch(e){return}if(sig()!==b)main()},20000);
+const tick=async()=>{if(!cur||document.hidden||inflight)return;const ov=document.querySelector(".ovl");if(!ov){const ae=document.activeElement;if(ae&&/^(INPUT|SELECT|TEXTAREA)$/.test(ae.tagName))return}const b=sig();try{await pull()}catch(e){return}if(sig()!==b){if(ov)document.dispatchEvent(new Event("dbchg"));else main()}};
+setInterval(tick,10000);document.addEventListener("visibilitychange",()=>{if(!document.hidden)tick()});
 </script>
 </body>
 </html>

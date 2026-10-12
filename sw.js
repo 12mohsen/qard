@@ -1,6 +1,6 @@
 // خدمة العمل: تجعل التطبيق قابلًا للتثبيت وتفتح واجهته حتى بدون إنترنت.
 // البيانات نفسها (Supabase) لا تُخزَّن هنا أبدًا — تأتي دائمًا من الإنترنت.
-const V = "loans-v2";
+const V = "loans-v3";
 const SHELL = ["./", "manifest.webmanifest", "icon-192.png", "icon-512.png"];
 
 self.addEventListener("install", e => {

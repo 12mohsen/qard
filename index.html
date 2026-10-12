@@ -316,9 +316,9 @@ const plUrl=tok=>location.origin+location.pathname+"?p="+tok;
 const plTok=()=>{const a=new Uint8Array(18);crypto.getRandomValues(a);return[...a].map(b=>b.toString(16).padStart(2,"0")).join("")};
 const plChanged=(p,l)=>+p.amount!==+l.amount||+p.total!==+l.total||p.due!==l.due;
 const plFmtT=x=>{try{return new Date(x).toLocaleString(L==="ar"?"ar-u-nu-latn-ca-gregory":L==="id"?"id-ID":"en-GB")}catch(e){return x}};
-const needApv=l=>{const p=PL.get(l.id);return !!(p&&p.accepted_at&&!l.apv&&!l.paid)};
-function apvHtml(){const r=loans().filter(needApv).sort((a,b)=>String(PL.get(b.id).accepted_at).localeCompare(String(PL.get(a.id).accepted_at)));if(!r.length)return"";
-return`<div class="box"><h2>⏳ ${t("apvList")} <span class="cn2">${r.length}</span></h2>`+r.map(l=>`<div class="shr" style="gap:10px;flex-wrap:wrap;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line)"><span><b>${esc(l.name)}</b> <span class="m">· ${fmt(l.amount)} → ${fmt(l.total)} ${t("cur")} · ${esc(fundOf(l))} · ${plShort(PL.get(l.id).accepted_at)}</span></span><button class="ok" data-apv="${l.id}">✔ ${t("apvBtn")}</button></div>`).join("")+`</div>`}
+const needApv=l=>!l.apv&&!l.paid;
+function apvHtml(){const r=loans().filter(needApv).sort((a,b)=>String(b.created||b.start||b.due).localeCompare(String(a.created||a.start||a.due)));if(!r.length)return"";
+return`<div class="box"><h2>⏳ ${t("apvList")} <span class="cn2">${r.length}</span></h2>`+r.map(l=>`<div class="shr" style="gap:10px;flex-wrap:wrap;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line)"><span><b>${esc(l.name)}</b> <span class="m">· ${fmt(l.amount)} → ${fmt(l.total)} ${t("cur")} · ${esc(fundOf(l))} ${PL.get(l.id)&&PL.get(l.id).accepted_at?"· ✔ "+plShort(PL.get(l.id).accepted_at):""}</span></span><button class="ok" data-apv="${l.id}">✔ ${t("apvBtn")}</button></div>`).join("")+`</div>`}
 const plShort=x=>{try{return new Date(x).toLocaleDateString(L==="ar"?"ar-u-nu-latn-ca-gregory":L==="id"?"id-ID":"en-GB",{day:"numeric",month:"short"})}catch(e){return""}};
 const plBadge=l=>{const p=PL.get(l.id),can=isAdmin()||l.owner===cur;let a="";
 if(l.apv)a=`<button class="plp ok apv" ${canApr()?`data-apv="${l.id}" title="${esc(t("apvUndo"))}"`:"disabled"}>✔ ${t("apvOk")} · ${plShort(l.apv)}</button>`;
@@ -545,6 +545,6 @@ document.getElementById("fpb").onclick=async()=>{try{if(fpGet()){localStorage.re
 let hidAt=0;document.addEventListener("visibilitychange",()=>{if(document.hidden)hidAt=Date.now();else if(hidAt&&Date.now()-hidAt>60000&&fpGet()&&cur)showLock()});
 showLock();fpUpd();
 </script>
-<div id="ver" style="text-align:center;opacity:.55;font-size:.72rem;padding:12px 0 24px" dir="ltr">v 2026-10-12 · approvals</div>
+<div id="ver" style="text-align:center;opacity:.55;font-size:.72rem;padding:12px 0 24px" dir="ltr">v 2026-10-12 · approvals2</div>
 </body>
 </html>

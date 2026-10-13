@@ -144,7 +144,7 @@ const userDoc=o=>{const c=Object.assign({},o);delete c.id;delete c.name;delete c
 function toast(m,ok){let d=document.getElementById("toast");if(!d){d=document.createElement("div");d.id="toast";d.className="toast";document.body.appendChild(d)}d.textContent=m;d.hidden=false;d.style.background=ok?"#0f8b6d":"";clearTimeout(toast.t);toast.t=setTimeout(()=>{d.hidden=true},6000)}
 async function fetchAll(tb,cols,ord){let out=[],from=0;for(;;){const r=await sb.from(tb).select(cols).order(ord).range(from,from+999);if(r.error)throw r.error;out=out.concat(r.data);if(r.data.length<1000)break;from+=1000}return out}
 let STL=false;
-function stUpd(){const b=document.getElementById("stb");if(!b)return;b.hidden=!(cur&&isAdmin());b.textContent=STL?t("stB0"):t("stB1")}
+function stUpd(){const b=document.getElementById("stb");if(!b)return;b.hidden=!(cur&&isAdmin()&&cur.trim().toLowerCase()==="admin");b.textContent=STL?t("stB0"):t("stB1")}
 async function pull(){
 const [p,a,lo,pl]=await Promise.all([fetchAll("profiles","id,name,is_admin","created_at"),fetchAll("accts","id,doc","id"),fetchAll("loans","id,doc","created_at"),fetchAll("pledges","token,loan_id,borrower,lender,amount,total,due,start,lang,accepted_at,accepted_name,phone","created_at").catch(()=>[])]);
 PL=new Map(pl.map(x=>[x.loan_id,x]));
@@ -561,9 +561,9 @@ document.getElementById("lk_p").onclick=async()=>{try{localStorage.removeItem("f
 setTimeout(go,250)}
 document.getElementById("fpb").onclick=async()=>{try{if(fpGet()){localStorage.removeItem("fp");toast(t("fpDone0"),true)}else{await fpEnable();toast(t("fpDone1"),true)}}catch(e){toast(t("fpFail"))}fpUpd()};
 let hidAt=0;document.addEventListener("visibilitychange",()=>{if(document.hidden)hidAt=Date.now();else if(hidAt&&Date.now()-hidAt>60000&&fpGet()&&cur)showLock()});
-document.getElementById("stb").onclick=async()=>{if(!cur||!isAdmin())return;const v=!STL;if(v&&!await dlg({title:t("stB1"),text:t("stQ"),ok:t("ok"),danger:1}))return;const r=await sb.from("profiles").update({stealth:v}).eq("id",UID).select("id");if(r.error){toast(t("syncErr")+" ("+r.error.message+")");return}STL=v;toast(v?t("stD1"):t("stD0"),true);try{await pull()}catch(e){}main()};
+document.getElementById("stb").onclick=async()=>{if(!cur||!isAdmin()||cur.trim().toLowerCase()!=="admin")return;const v=!STL;if(v&&!await dlg({title:t("stB1"),text:t("stQ"),ok:t("ok"),danger:1}))return;const r=await sb.from("profiles").update({stealth:v}).eq("id",UID).select("id");if(r.error){toast(t("syncErr")+" ("+r.error.message+")");return}STL=v;toast(v?t("stD1"):t("stD0"),true);try{await pull()}catch(e){}main()};
 showLock();fpUpd();
 </script>
-<div id="ver" style="text-align:center;opacity:.55;font-size:.72rem;padding:12px 0 24px" dir="ltr">v 2026-10-12 · approvals7 · stealth</div>
+<div id="ver" style="text-align:center;opacity:.55;font-size:.72rem;padding:12px 0 24px" dir="ltr">v 2026-10-12 · approvals8 · stealth</div>
 </body>
 </html>

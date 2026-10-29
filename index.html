@@ -145,7 +145,7 @@ let L=localStorage.getItem("lang")||"ar",cur=null,tab="loans",flt="all",qry="",m
 const nz=x=>String(x||"").toLowerCase().normalize("NFKD").replace(/[\u064B-\u065F\u0670\u0640]/g,"").replace(/[أإآٱ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه").replace(/[٠-٩]/g,d=>"٠١٢٣٤٥٦٧٨٩".indexOf(d)).replace(/[^\p{L}\p{N}]/gu,"");
 const $=id=>document.getElementById(id),t=k=>T[L][k];
 /* ===== Supabase: الاتصال وطبقة البيانات ===== */
-const SB_URL="https://xxkfkzjlbfcszdjgnfsw.supabase.co",SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh4a2ZrempsYmZjc3pkamduZnN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE2Mzk0OTYsImV4cCI6MjEwNzIxNTQ5Nn0.krobEZUmJek25hTGkiL8ECxymEg2To6qLRAgntSjpVU",MAIL_DOMAIN="qard1.netlify.app";
+const SB_URL="https://xxkfkzjlbfcszdjgnfsw.supabase.co",SB_KEY="sb_publishable_eiClpSORGiFktzN9bSFYSQ_p9AkDmJ4",MAIL_DOMAIN="qard1.netlify.app";
 let sb=null;try{sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,autoRefreshToken:true}})}catch(e){}
 let PL=new Map(),PTOK=new URLSearchParams(location.search).get("p"),DB={users:new Map(),loans:new Map()},UID=null,inflight=0,qq=Promise.resolve();
 const load=k=>[...DB[k].values()].map(s=>JSON.parse(s));

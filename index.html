@@ -292,7 +292,7 @@ return`<div class="box"><h2>${t("fwait")}</h2>`+r.map(l=>`<div class="loan"><div
 const fundOf=l=>l.fund||l.owner;
 const selD=new Set();
 const canDel1=l=>{const m=me();return !!(m&&(m.admin||m.gl||(m.del&&l.owner===cur&&!l.paid&&!l.req)))};
-const fundsOk=()=>allowedFunds().filter(n=>{const a=avail(n);return a===null||a>0.001});
+const fundsOk=()=>allowedFunds().filter(n=>{const a=avail(n);return a!==null&&a>0.001});
 const allowedFunds=()=>{const us=users().map(u=>u.name);if(isAdmin())return us;const f=((me()||{}).funds||[]).filter(n=>us.includes(n));return f.length?f:[cur]};
 const enc=encodeURIComponent;
 const fundChips=u=>{const fs=(u.funds||[]).filter(n=>users().some(z=>z.name===n)),rest=users().filter(z=>!fs.includes(z.name));return fs.map(n=>`<button class="ok fch" data-fnd="${enc(u.name)}|${enc(n)}" title="${t("del")}">${esc(n)} <span aria-hidden="true">✕</span></button>`).join(" ")+(fs.length?"":`<span class="m">${t("fnone")}</span>`)+(rest.length?`<select class="fadd" data-fadd="${enc(u.name)}" aria-label="${t("fadd")}"><option value="">➕ ${t("fadd")}</option>${rest.map(z=>`<option value="${esc(z.name)}">${esc(z.name)}</option>`).join("")}</select>`:"")}
@@ -465,8 +465,8 @@ h+=`<div class="stats">${balCards()}${canProfit()?`<div class="stat"><b>${fmt(su
 h+=`<div class="box"><h2>${t("add")}</h2><div class="grid">
 <div><label for="n">${t("name")}</label><input id="n" list="bn" autocomplete="off"><datalist id="bn">${[...new Set(all.filter(l=>l.owner===cur).map(l=>l.name.trim()))].map(n=>`<option value="${esc(n)}">`).join("")}</datalist></div>
 ${allowedFunds().length>1||allowedFunds()[0]!==cur?`<div><label for="fu">${t("fundr")}</label><select id="fu">${fundsOk().length?fundsOk().map((n,i)=>`<option value="${esc(n)}"${i===0?" selected":""}>${esc(n)}</option>`).join(""):`<option value="">${esc(t("nofd"))}</option>`}</select><div class="m" id="fb"></div></div>`:""}
-<div><label for="a">${t("amt")}</label><input id="a" type="text" min="1" step="any" inputmode="decimal" placeholder="100" autocomplete="off"></div>
-<div><label for="r">${t("profit")}</label><input id="r" type="text" min="0" step="any" inputmode="decimal" placeholder="0" autocomplete="off"><label class="chk" style="margin-top:6px;display:flex;gap:6px;align-items:center"><input type="checkbox" id="pcu" style="width:auto"><span class="m">${t("pctS")}</span></label><span class="m" id="pcn" style="display:block;margin-top:4px"></span></div>
+<div><label for="a">${t("amt")}</label><input id="a" type="text" min="1" step="any" inputmode="decimal" placeholder="100" autocomplete="off"><div class="m" id="tfa" style="margin-top:6px;color:var(--ink)"></div></div>
+<div><label for="r">${t("profit")}</label><input id="r" type="text" min="0" step="any" inputmode="decimal" placeholder="0" autocomplete="off"><div class="m" id="tfr" style="margin-top:6px;color:var(--ink)"></div><label class="chk" style="margin-top:6px;display:flex;gap:6px;align-items:center"><input type="checkbox" id="pcu" style="width:auto"><span class="m">${t("pctS")}</span></label><span class="m" id="pcn" style="display:block;margin-top:4px"></span></div>
 <div id="pcw" hidden><label for="pc">${t("pctL")}</label><input id="pc" type="text" inputmode="decimal" placeholder="10" autocomplete="off"></div>
 <div><label for="d">${t("days")}</label><input id="d" type="text" min="1" inputmode="numeric" value="30"></div>
 </div><div class="grid g2">
@@ -582,7 +582,7 @@ main();toast("✔ "+t("uDone")+": "+v.n,1)};
 document.querySelectorAll("[data-pw]").forEach(b=>b.onclick=async()=>{if(!G("gu"))return;const n=decodeURIComponent(b.dataset.pw),tg=users().find(z=>z.name===n);if(!tg)return;const v=await dlg({title:t("pwFor")+": "+n,fields:[{id:"n",label:t("pwNew"),type:"password",req:1,msg:t("pwShort")},{id:"c",label:t("pwConf"),type:"password",req:1,msg:t("pwConf")}],ok:t("saveB"),check:async v=>{if(v.n.length<6)return t("pwShort");if(v.n!==v.c)return t("pwMis");const r=await sb.rpc("admin_set_password",{target:tg.id,pw:v.n});return r.error?r.error.message:""}});if(!v)return;await dlg({title:t("chPw"),text:"✔ "+t("pwDone")+" — "+n,ok:t("ok")})});
 document.querySelectorAll("[data-du]").forEach(b=>b.onclick=async()=>{if(await dlg({title:t("del"),text:t("sure")+" — "+b.dataset.du,ok:t("del"),danger:1})){const n=b.dataset.du;store("users",users().filter(z=>z.name!==n).map(z=>Object.assign(z,{funds:(z.funds||[]).filter(f=>f!==n)})));store("loans",loans().filter(l=>l.owner!==n));main()}});
 if($("sv")){
-const calc=()=>{const a=num($("a").value)||0,r=num($("r").value)||0;$("tt").value=fmt(a+r)+" "+t("cur");if($("tfq"))$("tfq").textContent=tafq(a+r);if($("fu")){const v=avail($("fu").value);$("fb").textContent=v===null?"":t("bAvail")+": "+fmt(v)+" "+t("cur")}};
+const calc=()=>{const a=num($("a").value)||0,r=num($("r").value)||0;$("tt").value=fmt(a+r)+" "+t("cur");if($("tfq"))$("tfq").textContent=tafq(a+r);if($("tfa"))$("tfa").textContent=tafq(a);if($("tfr"))$("tfr").textContent=tafq(r);if($("fu")){const v=avail($("fu").value);$("fb").textContent=v===null?"":t("bAvail")+": "+fmt(v)+" "+t("cur")}};
 const fromDays=()=>{sD("dd",addD(gD("s"),Math.max(0,num($("d").value))));calc()};
 let man=false;const pcR=()=>{const a=num($("a").value)||0,p=num($("pc").value);if(!(a>0))$("r").value="";else if(p>0)$("r").value=Math.round(a*p)/100};
 const pcN=()=>{const n=$("pcn");if(n)n.textContent=$("pcu").checked?"":t("pctL")+": "+($("pc").value||"0")+"%"};
@@ -600,7 +600,7 @@ $("sv").onclick=async()=>{const n=$("n").value.trim(),a=num($("a").value),r=num(
 const fe=m=>{$("fe").textContent=m};
 if(!n){fe(t("eName"));$("n").focus();return}
 if(!(a>0)){fe(t("eAmt"));$("a").focus();return}
-const fnd=$("fu")?$("fu").value:allowedFunds()[0];if(!fnd){fe(t("noCap"));return}if(!allowedFunds().includes(fnd))return;const av=avail(fnd);if(av!==null&&a>av+0.001){fe(t("eBal").replace("{n}",fmt(av)+" "+t("cur")));$("a").focus();return}
+const fnd=$("fu")?$("fu").value:allowedFunds()[0];if(!fnd){fe(t("noCap"));return}if(!fundsOk().includes(fnd)){fe(t("noCap"));return}const av=avail(fnd);if(av!==null&&a>av+0.001){fe(t("eBal").replace("{n}",fmt(av)+" "+t("cur")));$("a").focus();return}
 if(!(r>=0)){fe(t("eRepay"));$("r").focus();return}
 if(!s||!due||due<s){fe(t("eDue"));$("dd").focus();return}
 const all=loans();const nm0=n.toLowerCase();let dc=all.filter(z=>!z.paid&&z.name.trim().toLowerCase()===nm0),dn=dc.length,da=dc.reduce((x,z)=>x+rem(z),0),dk=dc.filter(z=>st(z)==="over").length;
@@ -657,6 +657,6 @@ document.getElementById("stb").onclick=async()=>{if(!cur||!isAdmin()||cur.trim()
 showLock();fpUpd();
 </script>
 <div id="own" style="text-align:center;font-size:.85rem;padding:14px 0 0;opacity:.8"><span id="ownl">المالك</span>: <b dir="ltr">mohsen</b></div>
-<div id="ver" style="text-align:center;opacity:.55;font-size:.72rem;padding:4px 0 24px" dir="ltr">v 2026-10-12 · approvals35 · shtafq</div>
+<div id="ver" style="text-align:center;opacity:.55;font-size:.72rem;padding:4px 0 24px" dir="ltr">v 2026-10-12 · approvals37 · fundsbal</div>
 </body>
 </html>

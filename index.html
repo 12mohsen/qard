@@ -279,7 +279,7 @@ const finPay=(l,d)=>{const r=rem(l);if((l.pays||[]).length&&r>0.004)l.pays=l.pay
 const shSum=l=>sh(l).reduce((n,x)=>n+x.a,0);
 const shMine=()=>{const k=cur.toLowerCase(),r=[];loans().forEach(l=>sh(l).forEach(x=>{if(seeAll()||x.w.trim().toLowerCase()===k)r.push({l,a:x.a,w:x.w})}));loans().forEach(l=>{const q=prof(l)-shSum(l);if(q>0.001&&(isAdmin()||fundOf(l).toLowerCase()===k))r.push({l,a:q,w:t("adminRest")})});return r};
 function shPanel(l){const p=prof(l),d=shSum(l);
-return`<div class="shp"><div class="m">${t("profit")}: <b>${fmt(p)}</b> · ${t("sDist")}: <b>${fmt(d)}</b> · ${t("sRem")}: <b style="${p-d<0?"color:var(--bad)":""}">${fmt(p-d)}</b> ${t("cur")}</div>${p-d<0?`<div class="err">${t("sOver")}</div>`:""}`+sh(l).map((x,i)=>`<div class="shr"><span>${esc(x.w)}${users().some(z=>z.name.toLowerCase()===x.w.trim().toLowerCase())?"":` <small style="color:var(--warn)">⚠ ${t("noAcc")}</small>`}</span><b>${fmt(x.a)}</b><button class="bad" data-srm="${l.id}:${i}" aria-label="${t("del")}">×</button></div>`).join("")+`<div class="row"><input id="sw-${l.id}" list="su" placeholder="${t("sName")}" autocomplete="off"><input id="sa-${l.id}" type="text" inputmode="decimal" placeholder="${t("sAmt")}"><button data-sad="${l.id}">${t("sAdd")}</button></div><p class="err" id="se-${l.id}"></p></div>`}
+return`<div class="shp"><div class="m">${t("profit")}: <b>${fmt(p)}</b> · ${t("sDist")}: <b>${fmt(d)}</b> · ${t("sRem")}: <b style="${p-d<0?"color:var(--bad)":""}">${fmt(p-d)}</b> ${t("cur")}</div>${p-d<0?`<div class="err">${t("sOver")}</div>`:""}`+sh(l).map((x,i)=>`<div class="shr"><span>${esc(x.w)}${users().some(z=>z.name.toLowerCase()===x.w.trim().toLowerCase())?"":` <small style="color:var(--warn)">⚠ ${t("noAcc")}</small>`}</span><b>${fmt(x.a)}</b><button class="bad" data-srm="${l.id}:${i}" aria-label="${t("del")}">×</button></div>`).join("")+`<div class="row"><input id="sw-${l.id}" list="su" placeholder="${t("sName")}" autocomplete="off"><input id="sa-${l.id}" type="text" inputmode="decimal" placeholder="${t("sAmt")}"><button data-sad="${l.id}">${t("sAdd")}</button></div><div class="m" id="st-${l.id}" style="margin-top:6px;color:var(--ink)"></div><p class="err" id="se-${l.id}"></p></div>`}
 function mineHtml(){const r0=shMine().sort((a,b)=>cts(b.l)-cts(a.l)||b.l.start.localeCompare(a.l.start)),mn=nz(mq),r=mn?r0.filter(x=>nz(x.w).includes(mn)||nz(x.l.name).includes(mn)):r0,sm=f=>r.filter(f).reduce((n,x)=>n+x.a,0);
 const names=[...new Set(r0.map(x=>x.w.trim()).filter(Boolean))],sb=`<input type="text" id="ms" class="qs" list="msn" value="${esc(mq)}" placeholder="🔍 ${t("srch")}" aria-label="${t("srch")}" autocomplete="off"><datalist id="msn">${names.map(n=>`<option value="${esc(n)}">`).join("")}</datalist>`;
 if(!r0.length)return`<div class="box"><div class="empty">${t("sNone")}</div></div>`;
@@ -508,6 +508,7 @@ document.querySelectorAll("[data-sad]").forEach(b=>b.onclick=()=>{if(!G("gl"))re
 if(!w||!(a>0)){e.textContent=t("sBad");return}
 const rm0=Math.round((prof(l)-shSum(l))*100)/100;if(a>rm0+0.004){e.textContent=t("shMax").replace("{n}",fmt(Math.max(0,rm0)));return}
 const u=users().find(z=>z.name.toLowerCase()===w.toLowerCase());l.sh=sh(l).concat([{w:u?u.name:w,a}]);store("loans",arr);main()});
+document.querySelectorAll('[id^="sa-"],[id^="sw-"]').forEach(i=>i.addEventListener("input",()=>{const k=i.id.slice(3),e=$("se-"+k);if(e)e.textContent="";if(i.id.startsWith("sa-")){const tf=$("st-"+k);if(tf)tf.textContent=tafq(num(i.value))}}));
 document.querySelectorAll("[data-srm]").forEach(b=>b.onclick=()=>{if(!G("gl"))return;const[id,i]=b.dataset.srm.split(":"),arr=loans(),l=arr.find(x=>x.id===id);if(l){l.sh=sh(l).filter((_,j)=>j!==+i);store("loans",arr);main()}});
 document.querySelectorAll("[data-ap]").forEach(b=>b.onclick=()=>upd(b.dataset.ap,l=>{if(canApr()){finPay(l,l.reqOn||nowS());l.paid=true;l.req=false;l.paidOn=l.reqOn||nowS()}}));
 document.querySelectorAll("[data-al]").forEach(b=>b.onclick=()=>upd(b.dataset.al,l=>{if(canApr()){l.req=false;delete l.reqOn}}));
@@ -656,6 +657,6 @@ document.getElementById("stb").onclick=async()=>{if(!cur||!isAdmin()||cur.trim()
 showLock();fpUpd();
 </script>
 <div id="own" style="text-align:center;font-size:.85rem;padding:14px 0 0;opacity:.8"><span id="ownl">المالك</span>: <b dir="ltr">mohsen</b></div>
-<div id="ver" style="text-align:center;opacity:.55;font-size:.72rem;padding:4px 0 24px" dir="ltr">v 2026-10-12 · approvals34 · scroll</div>
+<div id="ver" style="text-align:center;opacity:.55;font-size:.72rem;padding:4px 0 24px" dir="ltr">v 2026-10-12 · approvals35 · shtafq</div>
 </body>
 </html>

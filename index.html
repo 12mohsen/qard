@@ -102,6 +102,7 @@ body.stl #who::before{content:"🕶 "}
 body.stl #stb{border-color:#7c5cff;color:#8a6dff;font-weight:700}
 @media print{#prt .pdt{width:100%;border-collapse:collapse;font-size:22px;line-height:1.7}#prt .pdt th,#prt .pdt td{border:1px solid #000;padding:8px 12px;text-align:start}#prt .pdt th{background:#eee}}
 @media (max-width:820px),(pointer:coarse){.gscroll{max-height:none;overflow:visible;overscroll-behavior:auto;padding-inline-end:0}.tw{max-height:none;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;overscroll-behavior-y:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y}.tw th{position:static}}
+@media (max-width:820px){.loan{grid-template-columns:minmax(0,1fr);gap:10px}.loan>div:first-child{min-width:0;display:flex;flex-direction:column;gap:6px;align-items:flex-start}.loan>div:first-child>b{font-size:1.05rem}.loan .m{line-height:1.7;overflow-wrap:anywhere}.loan .acts{justify-content:flex-start;align-items:center;gap:8px;padding-top:10px;border-top:1px dashed var(--line)}.loan .acts button{flex:1 1 auto;min-width:64px;padding:10px 12px}.loan .acts input[type=checkbox]{width:22px;height:22px;flex:none}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 </head>
@@ -658,6 +659,6 @@ document.getElementById("stb").onclick=async()=>{if(!cur||!isAdmin()||cur.trim()
 showLock();fpUpd();
 </script>
 <div id="own" style="text-align:center;font-size:.85rem;padding:14px 0 0;opacity:.8"><span id="ownl">المالك</span>: <b dir="ltr">mohsen</b></div>
-<div id="ver" style="text-align:center;opacity:.55;font-size:.72rem;padding:4px 0 24px" dir="ltr">v 2026-10-12 · approvals38 · touch</div>
+<div id="ver" style="text-align:center;opacity:.55;font-size:.72rem;padding:4px 0 24px" dir="ltr">v 2026-10-12 · approvals39 · card</div>
 </body>
 </html>
